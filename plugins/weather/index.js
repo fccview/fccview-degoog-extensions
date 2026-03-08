@@ -54,6 +54,7 @@ export default {
   description: "Shows weather information using Open-Meteo",
   trigger: "weather",
   aliases: ["wttr", "forecast"],
+  naturalLanguagePhrases: ["what's the weather", "weather for", "weather"],
 
   settingsSchema: [
     {
