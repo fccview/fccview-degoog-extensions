@@ -15,6 +15,8 @@ function getRandomUserAgent() {
 
 const ANONYMOUS_VIEW_BASE = "https://www.startpage.com/do/d/search";
 
+export const outgoingHosts = ["www.startpage.com", "startpage.com"];
+
 export default class StartpageEngine {
   name = "Startpage";
   bangShortcut = "sp";
@@ -37,12 +39,13 @@ export default class StartpageEngine {
       settings.useAnonymousView === "true";
   }
 
-  async executeSearch(query, page = 1) {
+  async executeSearch(query, page = 1, _timeFilter, context) {
     const p = Math.max(0, (page || 1) - 1);
     const params = new URLSearchParams({ q: query, cat: "web" });
     if (p > 0) params.set("page", String(p + 1));
     const url = `https://www.startpage.com/sp/search?${params.toString()}`;
-    const response = await fetch(url, {
+    const doFetch = context?.fetch ?? fetch;
+    const response = await doFetch(url, {
       headers: { "User-Agent": getRandomUserAgent() },
       method: "GET",
     });

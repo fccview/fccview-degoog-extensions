@@ -13,16 +13,19 @@ function getRandomUserAgent() {
   return USER_AGENTS[Math.floor(Math.random() * USER_AGENTS.length)];
 }
 
+export const outgoingHosts = ["www.ecosia.org", "ecosia.org"];
+
 export default class EcosiaEngine {
   name = "Ecosia";
   bangShortcut = "ecosia";
 
-  async executeSearch(query, page = 1) {
+  async executeSearch(query, page = 1, _timeFilter, context) {
     const p = Math.max(0, (page || 1) - 1);
     const params = new URLSearchParams({ q: query });
     if (p > 0) params.set("p", String(p));
     const url = `https://www.ecosia.org/search?${params.toString()}`;
-    const response = await fetch(url, {
+    const doFetch = context?.fetch ?? fetch;
+    const response = await doFetch(url, {
       headers: { "User-Agent": getRandomUserAgent() },
     });
     const html = await response.text();
