@@ -227,10 +227,10 @@ async function searchFeeds(query, page) {
     q === ""
       ? allItems
       : allItems.filter((item) => {
-          const title = item.title.toLowerCase();
-          const desc = item.description.toLowerCase();
-          return title.includes(q) || desc.includes(q);
-        });
+        const title = item.title.toLowerCase();
+        const desc = item.description.toLowerCase();
+        return title.includes(q) || desc.includes(q);
+      });
   const start = (page - 1) * PAGE_SIZE;
   return filtered.slice(start, start + PAGE_SIZE);
 }
@@ -377,10 +377,10 @@ const command = {
       const q = query.toLowerCase();
       return q
         ? allItems.filter(
-            (i) =>
-              i.title.toLowerCase().includes(q) ||
-              i.description.toLowerCase().includes(q),
-          ).length
+          (i) =>
+            i.title.toLowerCase().includes(q) ||
+            i.description.toLowerCase().includes(q),
+        ).length
         : allItems.length;
     })();
     const totalPages = Math.ceil(totalItems / PAGE_SIZE);
@@ -445,7 +445,7 @@ const routes = [
                   if (r && r.items.length > 0) {
                     send("items", r.items.map(serializeItem));
                   }
-                }).catch(() => {}).finally(() => {
+                }).catch(() => { }).finally(() => {
                   active--;
                   next();
                 });

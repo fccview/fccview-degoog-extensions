@@ -161,6 +161,12 @@
       if (desktop && !showOnDesktop) {
         es.close();
         container.remove();
+        return;
+      }
+      if (desktop && showOnDesktop) {
+        container.innerHTML = skeletonCards(6);
+        container.classList.add("home-news-feed--loading", "home-news-feed--desktop");
+        container.appendChild(sentinel);
       }
     });
 
@@ -206,12 +212,10 @@
     container.className = "home-news-feed";
     var desktop = isDesktop();
 
-    container.innerHTML = skeletonCards(desktop ? 6 : 4);
-    container.classList.add("home-news-feed--loading");
     if (!desktop) {
+      container.innerHTML = skeletonCards(4);
+      container.classList.add("home-news-feed--loading");
       main.classList.add("has-feed");
-    } else {
-      container.classList.add("home-news-feed--desktop");
     }
 
     main.appendChild(container);
