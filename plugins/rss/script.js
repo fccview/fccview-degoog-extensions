@@ -112,10 +112,12 @@
     container.className = "home-news-feed";
     const desktop = isDesktop();
 
+    container.innerHTML = skeletonCards(desktop ? 6 : 4);
+    container.classList.add("home-news-feed--loading");
     if (!desktop) {
       main.classList.add("has-feed");
-      container.innerHTML = skeletonCards(4);
-      container.classList.add("home-news-feed--loading");
+    } else {
+      container.classList.add("home-news-feed--desktop");
     }
 
     main.appendChild(container);
@@ -123,9 +125,7 @@
     try {
       const items = await fetchPage(1);
       if (items.length === 0) {
-        if (!desktop) {
-          main.classList.remove("has-feed");
-        }
+        if (!desktop) main.classList.remove("has-feed");
         container.remove();
         return;
       }
@@ -135,11 +135,7 @@
         return;
       }
 
-      if (desktop && showOnDesktop) {
-        container.classList.add("home-news-feed--desktop");
-      }
-
-      if (!desktop) container.classList.remove("home-news-feed--loading");
+      container.classList.remove("home-news-feed--loading");
       container.innerHTML = items.map(renderCard).join("") + '<div class="home-feed-sentinel"></div>';
       feedPage = 2;
 
@@ -149,9 +145,7 @@
       }, { rootMargin: "400px" });
       if (sentinel) observer.observe(sentinel);
     } catch {
-      if (!desktop) {
-        main.classList.remove("has-feed");
-      }
+      if (!desktop) main.classList.remove("has-feed");
       container.remove();
     }
   }

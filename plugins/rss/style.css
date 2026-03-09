@@ -206,4 +206,14 @@
   .home-news-feed--desktop .home-feed-card-favicon-wrap {
     display: flex;
   }
+
+  .home-news-feed--desktop .skeleton-feed {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+  }
+  .home-news-feed--desktop .skeleton-feed-card {
+    flex: 0 0 280px;
+    min-width: 280px;
+  }
 }
