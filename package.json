@@ -84,13 +84,13 @@
     {
       "path": "engines/ecosia",
       "name": "Ecosia",
-      "description": "Privacy-focused web search (no settings).",
+      "description": "Adds the Ecosia engine to degoog.",
       "version": "1.0.0"
     },
     {
       "path": "engines/startpage",
       "name": "Startpage",
-      "description": "Privacy-focused web search. Optional: use Anonymous View so result links open via Startpage's proxy.",
+      "description": "Adds the startspage engine to degoog. You can enable Anonymous View so result links open via Startpage's proxy.",
       "version": "1.0.0"
     }
   ]
