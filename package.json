@@ -86,6 +86,14 @@
         "description": "When search results include GitHub repos or users, shows styled info above results.",
         "version": "1.0.0",
         "type": "slot"
+      },
+      {
+        "path": "plugins/file-tab",
+        "name": "File tab results",
+        "description": "Adds a Files tab to search results that finds downloadable files via file-type engines.",
+        "version": "1.0.0",
+        "type": "search-result-tab",
+        "dependencies": ["https://github.com/fccview/fccview-degoog-extensions/engines/internet-archive"]
       }
     ],
     "themes": [
@@ -119,6 +127,12 @@
         "path": "engines/startpage",
         "name": "Startpage",
         "description": "Adds the Startpage engine to degoog. You can enable Anonymous View so result links open via Startpage's proxy.",
+        "version": "1.0.0"
+      },
+      {
+        "path": "engines/internet-archive",
+        "name": "Internet Archive",
+        "description": "Adds the Internet Archive as a file-type engine. Searches archive.org for downloadable files, books, software, media, and more.",
         "version": "1.0.0"
       }
     ]
