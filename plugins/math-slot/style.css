@@ -1,26 +1,43 @@
-.glance-math {
-  position: relative;
-}
-
-.glance-math-expr {
-  font-size: 14px;
-  color: var(--text-secondary);
-  margin-bottom: 4px;
-  word-break: break-all;
-}
-
-.glance-math-result {
-  font-size: 20px;
-  font-weight: 600;
+.math-widget {
+  font-family: system-ui, -apple-system, sans-serif;
+  background: var(--bg-light);
+  max-width: 652px;
   color: var(--text-primary);
 }
 
-.glance-math-badge {
-  display: inline-block;
-  margin-top: 10px;
-  font-size: 11px;
+.math-header {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   color: var(--text-secondary);
-  background: var(--bg-hover);
-  border-radius: 4px;
-  padding: 2px 7px;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 0.5rem;
+}
+
+.math-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.math-query {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.math-equals {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  opacity: 0.7;
+}
+
+.math-result {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
 }

@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const cheerio = require("cheerio");
 
 let template = "";
@@ -10,6 +11,7 @@ const MAX_ITEMS_PER_FEED = 50;
 const MAX_CACHE_ENTRIES = 100;
 const MAX_FEEDS_PER_REQUEST = 20;
 const PAGE_SIZE = 20;
+const CACHE = new Map();
 
 const DEFAULT_NEWS_FEED_URLS = [
   "https://news.ycombinator.com/rss",
@@ -28,20 +30,18 @@ const DEFAULT_NEWS_FEED_URLS = [
   "https://thenextweb.com/feed/",
 ];
 
-const cache = new Map();
-
 let feedUrls = [];
 let showOnDesktop = false;
 
-function parseRssOrAtom(xml, feedUrl) {
+const _parseRssOrAtom = (xml, feedUrl) => {
   try {
-    return parseRssOrAtomInner(xml, feedUrl);
+    return _parseRssOrAtomInner(xml, feedUrl);
   } catch {
     return { items: [], feedTitle: new URL(feedUrl).hostname };
   }
-}
+};    
 
-function parseRssOrAtomInner(xml, feedUrl) {
+const _parseRssOrAtomInner = (xml, feedUrl) => {
   const $ = cheerio.load(xml, { xmlMode: true });
   const feedTitle =
     $("channel > title").first().text().trim() ||
@@ -158,8 +158,8 @@ function parseRssOrAtomInner(xml, feedUrl) {
   return { items: items.slice(0, MAX_ITEMS_PER_FEED), feedTitle };
 }
 
-async function fetchFeed(url) {
-  const cached = cache.get(url);
+const _fetchFeed = async (url) => {
+  const cached = CACHE.get(url);
   if (cached && Date.now() - cached.fetchedAt < CACHE_TTL_MS) {
     return { items: cached.items, feedTitle: cached.feedTitle };
   }
@@ -178,36 +178,36 @@ async function fetchFeed(url) {
     clearTimeout(timeout);
     if (!res.ok) return null;
     const xml = await res.text();
-    const parsed = parseRssOrAtom(xml, url);
-    cache.set(url, {
+    const parsed = _parseRssOrAtom(xml, url);
+    CACHE.set(url, {
       items: parsed.items,
       feedTitle: parsed.feedTitle,
       fetchedAt: Date.now(),
     });
-    if (cache.size > MAX_CACHE_ENTRIES) {
+    if (CACHE.size > MAX_CACHE_ENTRIES) {
       let oldest = null;
       let oldestTime = Infinity;
-      for (const [key, val] of cache) {
+      for (const [key, val] of CACHE) {
         if (val.fetchedAt < oldestTime) {
           oldestTime = val.fetchedAt;
           oldest = key;
         }
       }
-      if (oldest) cache.delete(oldest);
+      if (oldest) CACHE.delete(oldest);
     }
     return parsed;
   } catch {
     clearTimeout(timeout);
     return null;
   }
-}
+};
 
-async function fetchAllFeeds(urls) {
+const _fetchAllFeeds = async (urls) => {
   const capped = urls.slice(0, MAX_FEEDS_PER_REQUEST);
   const bySource = new Map();
   for (let i = 0; i < capped.length; i += CONCURRENCY) {
     const batch = capped.slice(i, i + CONCURRENCY);
-    const results = await Promise.all(batch.map((u) => fetchFeed(u)));
+    const results = await Promise.all(batch.map((u) => _fetchFeed(u)));
     for (const r of results) {
       if (!r || r.items.length === 0) continue;
       const key = r.feedTitle || capped[i];
@@ -219,10 +219,10 @@ async function fetchAllFeeds(urls) {
       bySource.set(key, sorted);
     }
   }
-  return interleaveFeeds(bySource);
-}
+  return _interleaveFeeds(bySource);
+};
 
-function interleaveFeeds(bySource) {
+const _interleaveFeeds = (bySource) => {
   const queues = [...bySource.values()].map((items) => ({ items, idx: 0 }));
   queues.sort((a, b) => {
     const ta = a.items[0]?.pubDate?.getTime() ?? 0;
@@ -239,16 +239,16 @@ function interleaveFeeds(bySource) {
     }
   }
   return result;
-}
+};
 
-function getActiveUrls() {
+const _getActiveUrls = () => {
   return feedUrls.length > 0 ? feedUrls : [...DEFAULT_NEWS_FEED_URLS];
-}
+};
 
-async function searchFeeds(query, page) {
-  const urls = getActiveUrls();
+const _searchFeeds = async (query, page) => {
+  const urls = _getActiveUrls();
   if (urls.length === 0) return [];
-  const allItems = await fetchAllFeeds(urls);
+  const allItems = await _fetchAllFeeds(urls);
   const q = query.trim().toLowerCase();
   const filtered =
     q === ""
@@ -260,17 +260,17 @@ async function searchFeeds(query, page) {
       });
   const start = (page - 1) * PAGE_SIZE;
   return filtered.slice(start, start + PAGE_SIZE);
-}
+};
 
-function escapeHtml(str) {
+const _esc = (str) => {
   return str
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
-}
+};  
 
-function formatDate(date) {
+const _formatDate = (date) => {
   if (!date) return "";
   const now = new Date();
   const diff = now.getTime() - date.getTime();
@@ -282,58 +282,69 @@ function formatDate(date) {
   const days = Math.floor(hours / 24);
   if (days < 7) return `${days}d ago`;
   return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
-}
+};
 
-function cleanUrl(url) {
+const _cleanUrl = (url) => {
   try {
     const u = new URL(url);
     return (u.hostname + u.pathname).replace(/\/$/, "");
   } catch {
     return url;
   }
-}
+};
 
-function faviconUrl(url) {
+const _faviconUrl = (url) => {
   try {
     const hostname = new URL(url).hostname;
     return `/api/proxy/image?url=${encodeURIComponent(`https://www.google.com/s2/favicons?domain=${hostname}&sz=32`)}`;
   } catch {
     return "";
   }
-}
+};
 
-function proxyImageUrl(url) {
+const _proxyImageUrl = (url) => {
   if (!url) return "";
   return `/api/proxy/image?url=${encodeURIComponent(url)}`;
-}
+};
 
-function renderResultItem(item) {
-  const dateStr = formatDate(item.pubDate);
+const _renderResultItem = (item) => {
+  const dateStr = _formatDate(item.pubDate);
   const thumbBlock = item.thumbnail
-    ? `<div class="result-thumbnail-wrap"><img class="result-thumbnail-img" src="${escapeHtml(proxyImageUrl(item.thumbnail))}" alt="" loading="lazy" onerror="this.parentElement.style.display='none'"></div>`
+    ? `<div class="result-thumbnail-wrap"><img class="result-thumbnail-img" src="${_esc(_proxyImageUrl(item.thumbnail))}" alt="" loading="lazy" onerror="this.parentElement.style.display='none'"></div>`
     : "";
-  let badges = `<span class="result-engine-tag">${escapeHtml(item.source)}</span>`;
-  if (dateStr) badges += `<span class="rss-result-date">${escapeHtml(dateStr)}</span>`;
+  let badges = `<span class="result-engine-tag">${_esc(item.source)}</span>`;
+  if (dateStr) badges += `<span class="rss-result-date">${_esc(dateStr)}</span>`;
   const data = {
-    faviconSrc: faviconUrl(item.url),
-    cite: escapeHtml(cleanUrl(item.url)),
-    itemUrl: escapeHtml(item.url),
-    title: escapeHtml(item.title),
-    snippet: escapeHtml(item.description.slice(0, 200)),
+    faviconSrc: _faviconUrl(item.url),
+    cite: _esc(_cleanUrl(item.url)),
+    itemUrl: _esc(item.url),
+    title: _esc(item.title),
+    snippet: _esc(item.description.slice(0, 200)),
     badges,
     thumbBlock,
   };
   return template.replace(/\{\{(\w+)\}\}/g, (_, key) => data[key] ?? "");
-}
+};
 
-function renderResultsHtml(items, page, query) {
+const _renderResultsHtml = (items, page, query) => {
   if (items.length === 0) {
-    return `<div class="command-result"><p>No RSS results found${query ? ` for <strong>${escapeHtml(query)}</strong>` : ""}.</p></div>`;
+    return `<div class="command-result"><p>No RSS results found${query ? ` for <strong>${_esc(query)}</strong>` : ""}.</p></div>`;
   }
-  return items.map(renderResultItem).join("");
+  return items.map(_renderResultItem).join("");
+};
+
+const _serializeItem = (item) => {
+  return {
+    title: item.title,
+    url: item.url,
+    snippet: item.description,
+    source: item.source,
+    thumbnail: item.thumbnail,
+    pubDate: item.pubDate ? item.pubDate.toISOString() : null,
+  };
 }
 
-const command = {
+const slot = {
   name: "Home RSS Feeds",
   description: "RSS/Atom news feed reader with home page integration",
   trigger: "rss",
@@ -397,10 +408,10 @@ const command = {
   async execute(args, context) {
     const page = context?.page ?? 1;
     const query = args.trim();
-    const items = await searchFeeds(query, page);
+    const items = await _searchFeeds(query, page);
     const totalItems = await (async () => {
-      const urls = getActiveUrls();
-      const allItems = await fetchAllFeeds(urls);
+      const urls = _getActiveUrls();
+      const allItems = await _fetchAllFeeds(urls);
       const q = query.toLowerCase();
       return q
         ? allItems.filter(
@@ -415,22 +426,11 @@ const command = {
       title: query
         ? `RSS Feeds - "${query}"`
         : "RSS Feeds - Latest",
-      html: renderResultsHtml(items, page, query),
+      html: _renderResultsHtml(items, page, query),
       totalPages: totalPages > 1 ? totalPages : undefined,
     };
   },
 };
-
-function serializeItem(item) {
-  return {
-    title: item.title,
-    url: item.url,
-    snippet: item.description,
-    source: item.source,
-    thumbnail: item.thumbnail,
-    pubDate: item.pubDate ? item.pubDate.toISOString() : null,
-  };
-}
 
 const routes = [
   {
@@ -439,8 +439,8 @@ const routes = [
     handler: async (req) => {
       const url = new URL(req.url);
       const page = Math.max(1, parseInt(url.searchParams.get("page") || "1", 10));
-      const items = await searchFeeds("", page);
-      const results = items.map(serializeItem);
+      const items = await _searchFeeds("", page);
+      const results = items.map(_serializeItem);
       return new Response(
         JSON.stringify({ results, showOnDesktop, cardTemplate }),
         { headers: { "Content-Type": "application/json" } },
@@ -451,7 +451,7 @@ const routes = [
     method: "get",
     path: "/feed/stream",
     handler: async () => {
-      const urls = getActiveUrls();
+      const urls = _getActiveUrls();
       const capped = urls.slice(0, MAX_FEEDS_PER_REQUEST);
       const encoder = new TextEncoder();
       const stream = new ReadableStream({
@@ -468,9 +468,9 @@ const routes = [
               while (active < CONCURRENCY && idx < capped.length) {
                 const url = capped[idx++];
                 active++;
-                fetchFeed(url).then((r) => {
+                _fetchFeed(url).then((r) => {
                   if (r && r.items.length > 0) {
-                    send("items", r.items.map(serializeItem));
+                    send("items", r.items.map(_serializeItem));
                   }
                 }).catch(() => { }).finally(() => {
                   active--;
@@ -487,7 +487,7 @@ const routes = [
       return new Response(stream, {
         headers: {
           "Content-Type": "text/event-stream",
-          "Cache-Control": "no-cache",
+          "Cache-Control": "no-CACHE",
           Connection: "keep-alive",
         },
       });
@@ -495,6 +495,6 @@ const routes = [
   },
 ];
 
-module.exports = command;
+module.exports = slot;
 module.exports.routes = routes;
-module.exports.default = command;
+module.exports.default = slot;

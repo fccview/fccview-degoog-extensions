@@ -1,6 +1,6 @@
 const API_BASE = "https://api.dictionaryapi.dev/api/v2/entries/en";
 
-function esc(s) {
+const _esc = (s) => {
   if (typeof s !== "string") return "";
   return s
     .replace(/&/g, "&amp;")
@@ -9,7 +9,7 @@ function esc(s) {
     .replace(/"/g, "&quot;");
 }
 
-function extractWord(args) {
+const _extractWord = (args) => {
   const t = args.trim().replace(/\s+mean(s)?$/i, "").trim();
   return t || args.trim().split(/\s+/)[0] || "";
 }
@@ -24,7 +24,7 @@ export default {
   settingsSchema: [],
 
   async execute(args) {
-    const word = extractWord(args);
+    const word = _extractWord(args);
     if (!word) {
       return {
         title: "Define",
@@ -37,7 +37,7 @@ export default {
         if (res.status === 404) {
           return {
             title: "Define",
-            html: `<div class="command-result"><p>No definition found for <strong>${esc(word)}</strong>.</p></div>`,
+            html: `<div class="command-result"><p>No definition found for <strong>${_esc(word)}</strong>.</p></div>`,
           };
         }
         throw new Error(res.statusText);
@@ -47,21 +47,21 @@ export default {
       if (!entry) {
         return {
           title: "Define",
-          html: `<div class="command-result"><p>No definition found for <strong>${esc(word)}</strong>.</p></div>`,
+          html: `<div class="command-result"><p>No definition found for <strong>${_esc(word)}</strong>.</p></div>`,
         };
       }
-      const wordTitle = esc(entry.word || word);
+      const wordTitle = _esc(entry.word || word);
       const phonetic = entry.phonetic || (entry.phonetics && entry.phonetics[0]?.text) || "";
       let html = `<div class="command-result define-result"><h3 class="define-word">${wordTitle}</h3>`;
-      if (phonetic) html += `<p class="define-phonetic">${esc(phonetic)}</p>`;
+      if (phonetic) html += `<p class="define-phonetic">${_esc(phonetic)}</p>`;
       const meanings = entry.meanings || [];
       for (const m of meanings.slice(0, 5)) {
-        const pos = m.partOfSpeech ? `<span class="define-pos">${esc(m.partOfSpeech)}</span>` : "";
+        const pos = m.partOfSpeech ? `<span class="define-pos">${_esc(m.partOfSpeech)}</span>` : "";
         html += `<div class="define-meaning">${pos}<ul class="define-list">`;
         const defs = (m.definitions || []).slice(0, 3);
         for (const d of defs) {
-          html += `<li>${esc(d.definition || "")}`;
-          if (d.example) html += ` <span class="define-example">&ldquo;${esc(d.example)}&rdquo;</span>`;
+          html += `<li>${_esc(d.definition || "")}`;
+          if (d.example) html += ` <span class="define-example">&ldquo;${_esc(d.example)}&rdquo;</span>`;
           html += `</li>`;
         }
         html += `</ul></div>`;
@@ -71,7 +71,7 @@ export default {
     } catch (err) {
       return {
         title: "Define",
-        html: `<div class="command-result"><p>Could not fetch definition: ${esc(String(err.message))}</p></div>`,
+        html: `<div class="command-result"><p>Could not fetch definition: ${_esc(String(err.message))}</p></div>`,
       };
     }
   },

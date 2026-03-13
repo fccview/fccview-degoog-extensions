@@ -14,13 +14,14 @@ const CAST_PATTERN = /^(.+?)\s+cast\s*$/i;
 const NON_MEDIA_PATTERN =
   /^(how\s|what\s(is|are|does|do)\s(a|an|the)?\s?(best\s)?(way|method|difference|meaning|purpose|reason)|why\s|where\s(can|do|is)|when\s(did|does|is|was)|can\si|should\si|how\sto|define\s|weather|recipe|price\sof|buy\s|download\s|install\s|code\s|error\s|fix\s|debug\s|www\.|https?:)/i;
 
-function _hasMediaIntent(query) {
+const _hasMediaIntent = (query) => {
   if (MEDIA_KEYWORDS.test(query)) return true;
   if (CAST_PATTERN.test(query)) return true;
-  return false;
-}
 
-function _titleSimilarity(query, title) {
+  return false;
+};
+
+const _titleSimilarity = (query, title) => {
   const q = query.toLowerCase().trim();
   const t = (title || "").toLowerCase().trim();
   if (!t) return 0;
@@ -29,67 +30,79 @@ function _titleSimilarity(query, title) {
   const qWords = q.split(/\s+/);
   const tWords = t.split(/\s+/);
   const matches = qWords.filter((w) => tWords.includes(w)).length;
-  return matches / Math.max(qWords.length, tWords.length);
-}
 
-function _isConfidentMatch(query, result, mediaIntent) {
+  return matches / Math.max(qWords.length, tWords.length);
+};
+
+const _isConfidentMatch = (query, result, mediaIntent) => {
   if (!result) return false;
+
   const sim = _titleSimilarity(query, result.title || result.name);
   const pop = result.popularity || 0;
+
   if (sim >= 1 && pop >= 5) return true;
   if (sim >= 0.9 && pop >= 15) return true;
   if (sim >= 0.7 && pop >= 40) return true;
   if (mediaIntent && sim >= 0.9) return true;
   if (mediaIntent && sim >= 0.7 && pop >= 10) return true;
-  return false;
-}
 
-function _stripMediaKeywords(query) {
+  return false;
+};
+
+const _stripMediaKeywords = (query) => {
   return query
     .replace(MEDIA_KEYWORDS, "")
     .replace(/\s{2,}/g, " ")
     .trim();
-}
+};
 
-function _esc(s) {
+const _esc = (s) => {
   if (typeof s !== "string") return "";
+  
   return s
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
-}
+};
 
-function _imgUrl(path, size) {
+const _imgUrl = (path, size) => {
   if (!path || typeof path !== "string") return "";
+
   const p = path.trim();
+
   if (!p) return "";
+
   return `${IMAGE_BASE}/${size}${p.startsWith("/") ? p : "/" + p}`;
-}
+};
 
-function _render(data) {
+const _render = (data) => {
   return template.replace(/\{\{(\w+)\}\}/g, (_, key) => data[key] ?? "");
-}
+};  
 
-async function _tmdb(key, path) {
+const _tmdb = async (key, path) => {
   const base = "https://api.themoviedb.org/3";
   const sep = path.includes("?") ? "&" : "?";
   const full = `${base}/${path}${sep}api_key=${encodeURIComponent(key)}&language=en-US`;
   const res = await fetch(full);
-  if (!res.ok) return null;
-  return res.json();
-}
 
-function _parseQuery(query) {
+  if (!res.ok) return null;
+
+  return res.json();
+};
+
+const _parseQuery = (query) => {
   const q = query.trim();
   const castMatch = q.match(CAST_PATTERN);
+
   if (castMatch) {
     return { intent: "cast", term: castMatch[1].trim() };
   }
-  return { intent: "search", term: q };
-}
 
-function _buildCastStrip(cast) {
+  return { intent: "search", term: q };
+};
+
+const _buildCastStrip = (cast) => {
   if (!Array.isArray(cast) || cast.length === 0) return "";
   return cast
     .slice(0, 24)
@@ -105,9 +118,9 @@ function _buildCastStrip(cast) {
       return `<div class="imdb-cast-card"><div class="imdb-cast-photo-wrap">${img}${fallback}</div><span class="imdb-cast-name">${name}</span>${character ? `<span class="imdb-cast-character">${character}</span>` : ""}</div>`;
     })
     .join("");
-}
+};
 
-function _buildMovieCards(movies) {
+const _buildMovieCards = (movies) => {
   if (!Array.isArray(movies) || movies.length === 0) return "";
   return movies
     .slice(0, 30)
@@ -121,16 +134,16 @@ function _buildMovieCards(movies) {
       return `<a href="https://www.themoviedb.org/${m.media_type || "movie"}/${m.id}" target="_blank" rel="noopener" class="imdb-movie-card"><div class="imdb-movie-poster">${posterHtml}</div><span class="imdb-movie-title">${title}</span><span class="imdb-movie-year">${year}</span></a>`;
     })
     .join("");
-}
+};
 
-function _tabLabel(item, mediaType) {
+const _tabLabel = (item, mediaType) => {
   const title = item.title || item.name || "";
   const year = (item.release_date || item.first_air_date || "").slice(0, 4);
   const type = mediaType === "tv" ? "TV" : "Movie";
   return year ? `${title} (${type}, ${year})` : `${title} (${type})`;
-}
+};
 
-function _buildSeasonAccordion(season, tmdbId) {
+const _buildSeasonAccordion = (season, tmdbId) => {
   const name = _esc(season.name || `Season ${season.season_number}`);
   const epCount = season.episode_count || 0;
   const airYear = (season.air_date || "").slice(0, 4);
@@ -143,21 +156,25 @@ function _buildSeasonAccordion(season, tmdbId) {
     .filter(Boolean)
     .join(" · ");
   const link = `https://www.themoviedb.org/tv/${tmdbId}/season/${season.season_number}`;
-  return `<details class="tmdb-accordion"><summary class="tmdb-accordion-summary">${name}<span class="tmdb-accordion-meta">${_esc(meta)}</span></summary><div class="tmdb-accordion-body"><div class="tmdb-season-detail">${posterHtml}<div class="tmdb-season-info">${overview ? `<p class="tmdb-season-overview">${overview}</p>` : ""}<a href="${_esc(link)}" target="_blank" rel="noopener" class="tmdb-season-link">View episodes</a></div></div></div></details>`;
-}
 
-function _buildSeasonsSection(details, tmdbId) {
+  return `<details class="tmdb-accordion"><summary class="tmdb-accordion-summary">${name}<span class="tmdb-accordion-meta">${_esc(meta)}</span></summary><div class="tmdb-accordion-body"><div class="tmdb-season-detail">${posterHtml}<div class="tmdb-season-info">${overview ? `<p class="tmdb-season-overview">${overview}</p>` : ""}<a href="${_esc(link)}" target="_blank" rel="noopener" class="tmdb-season-link">View episodes</a></div></div></div></details>`;
+};
+
+const _buildSeasonsSection = (details, tmdbId) => {
   const seasons = details?.seasons;
+
   if (!Array.isArray(seasons) || seasons.length === 0) return "";
+
   const seasonHtml = seasons
     .filter((s) => s.season_number > 0)
     .map((s) => _buildSeasonAccordion(s, tmdbId))
     .join("");
   if (!seasonHtml) return "";
-  return `<details class="tmdb-accordion"><summary class="tmdb-accordion-summary">Seasons<span class="tmdb-accordion-meta">${seasons.filter((s) => s.season_number > 0).length} seasons</span></summary><div class="tmdb-accordion-body">${seasonHtml}</div></details>`;
-}
 
-function _buildItemPanel(item, details, cast, mediaType) {
+  return `<details class="tmdb-accordion"><summary class="tmdb-accordion-summary">Seasons<span class="tmdb-accordion-meta">${seasons.filter((s) => s.season_number > 0).length} seasons</span></summary><div class="tmdb-accordion-body">${seasonHtml}</div></details>`;
+};
+
+const _buildItemPanel = (item, details, cast, mediaType) => {
   const title = item.title || item.name || details?.title || details?.name || "";
   const year = (
     item.release_date ||
@@ -175,29 +192,33 @@ function _buildItemPanel(item, details, cast, mediaType) {
   const metaLine = [typeLabel, year].filter(Boolean).join(" · ");
   const castStrip = _buildCastStrip(cast);
   const castSection = castStrip
-    ? `<details class="tmdb-accordion" open><summary class="tmdb-accordion-summary">Cast<span class="tmdb-accordion-meta">${cast.length} ${cast.length === 1 ? "person" : "people"}</span></summary><div class="tmdb-accordion-body"><div class="imdb-cast-scroll"><div class="imdb-cast-strip">${castStrip}</div></div></div></details>`
+      ? `<details class="tmdb-accordion" open><summary class="tmdb-accordion-summary">Cast<span class="tmdb-accordion-meta">${cast.length} ${cast.length === 1 ? "person" : "people"}</span></summary><div class="tmdb-accordion-body"><div class="imdb-cast-scroll"><div class="imdb-cast-strip">${castStrip}</div></div></div></details>`
     : "";
   const seasonsSection = mediaType === "tv" ? _buildSeasonsSection(details, item.id) : "";
   const plotBlock = plot ? `<p class="imdb-plot">${_esc(plot)}</p>` : "";
-  return `<div class="imdb-hero">${posterHtml}<div class="imdb-hero-text"><div class="imdb-meta">${_esc(metaLine)}</div><h3 class="imdb-title">${_esc(title)}</h3></div></div>${plotBlock}${castSection}${seasonsSection}`;
-}
 
-function _wrapTabs(tabs) {
+  return `<div class="imdb-hero">${posterHtml}<div class="imdb-hero-text"><div class="imdb-meta">${_esc(metaLine)}</div><h3 class="imdb-title">${_esc(title)}</h3></div></div>${plotBlock}${castSection}${seasonsSection}`;
+};
+
+const _wrapTabs = (tabs) => {
   if (tabs.length === 1) return tabs[0].panel;
+  
   const tabButtons = tabs
     .map(
       (t, i) =>
         `<button class="tmdb-tab-btn${i === 0 ? " tmdb-tab-btn--active" : ""}" data-tmdb-tab="${i}" onclick="this.parentElement.querySelectorAll('.tmdb-tab-btn').forEach(b=>b.classList.remove('tmdb-tab-btn--active'));this.classList.add('tmdb-tab-btn--active');this.closest('.tmdb-tabs').querySelectorAll('.tmdb-tab-panel').forEach((p,j)=>{p.style.display=j===${i}?'block':'none'})">${_esc(t.label)}</button>`,
     )
     .join("");
+
   const tabPanels = tabs
     .map(
       (t, i) =>
         `<div class="tmdb-tab-panel" style="${i === 0 ? "" : "display:none"}">${t.panel}</div>`,
     )
     .join("");
+
   return `<div class="tmdb-tabs"><div class="tmdb-tab-bar">${tabButtons}</div>${tabPanels}</div>`;
-}
+};
 
 export const slot = {
   id: "tmdb",

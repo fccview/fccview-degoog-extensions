@@ -1,6 +1,13 @@
 export const outgoingHosts = ["archive.org", "www.archive.org"];
 export const type = "file";
 
+const _formatBytes = (bytes) => {
+  if (bytes === 0) return "0 B";
+  const k = 1024;
+  const sizes = ["B", "KB", "MB", "GB", "TB"];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + " " + sizes[i];
+};
 export default class InternetArchiveEngine {
   name = "Internet Archive";
   bangShortcut = "ia";
@@ -49,12 +56,4 @@ export default class InternetArchiveEngine {
       };
     });
   }
-}
-
-function _formatBytes(bytes) {
-  if (bytes === 0) return "0 B";
-  const k = 1024;
-  const sizes = ["B", "KB", "MB", "GB", "TB"];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + " " + sizes[i];
 }

@@ -5,23 +5,20 @@
   var main = document.getElementById("main-home");
   if (!main) return;
 
-  var feedPage = 1;
-  var loading = false;
-  var exhausted = false;
   var showOnDesktop = false;
-  var observer = null;
   var cardTpl = "";
 
   var isDesktop = function () { return window.matchMedia("(min-width: 768px)").matches; };
 
-  function escapeHtml(str) {
+  const escapeHtml = (str) => {
     var el = document.createElement("span");
     el.textContent = str;
     return el.innerHTML;
   }
 
-  function proxyImageUrl(url) {
+  const proxyImageUrl = (url) => {
     if (!url) return "";
+
     return "/api/proxy/image?url=" + encodeURIComponent(url);
   }
 
@@ -29,7 +26,7 @@
     try { return new URL(url).hostname.replace(/^www\./, ""); } catch { return ""; }
   }
 
-  function formatDate(dateStr) {
+  const formatDate = (dateStr) => {
     if (!dateStr) return "";
     var date = new Date(dateStr);
     if (isNaN(date.getTime())) return "";
@@ -44,14 +41,14 @@
     return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
   }
 
-  function faviconUrl(url) {
+  const faviconUrl = (url) => {
     try {
       var hostname = new URL(url).hostname;
       return "/api/proxy/image?url=" + encodeURIComponent("https://www.google.com/s2/favicons?domain=" + hostname + "&sz=128");
-    } catch (e) { return ""; }
+    } catch { return ""; }
   }
 
-  function skeletonCards(count) {
+  const skeletonCards = (count) => {
     var html = '<div class="skeleton-feed" aria-hidden="true">';
     for (var i = 0; i < count; i++) {
       html += '<div class="skeleton-feed-card"><div class="skeleton-feed-image"></div><div class="skeleton-feed-body"><div class="skeleton-feed-line skeleton-feed-source"></div><div class="skeleton-feed-line skeleton-feed-title"></div></div></div>';
@@ -60,7 +57,7 @@
     return html;
   }
 
-  function renderCard(item) {
+  const renderCard = (item) => {
     var image = item.thumbnail
       ? '<img class="home-feed-card-img" src="' + escapeHtml(proxyImageUrl(item.thumbnail)) + '" alt="" loading="lazy" onerror="this.parentElement.querySelector(\'.home-feed-card-img\')?.remove()">'
       : '<div class="home-feed-card-favicon-wrap"><img class="home-feed-card-favicon" src="' + escapeHtml(faviconUrl(item.url)) + '" alt="" loading="lazy" onerror="this.parentElement.remove()"></div>';
@@ -91,7 +88,7 @@
       + "</div></a>";
   }
 
-  function createCardElement(item) {
+  const createCardElement = (item) => {
     var temp = document.createElement("div");
     temp.innerHTML = renderCard(item);
     return temp.firstChild;
@@ -137,36 +134,6 @@
       }
     }
     container.insertBefore(cardEl, sentinel);
-  }
-
-  async function fetchPage(page) {
-    var res = await fetch("/api/plugin/rss/feed?page=" + page);
-    if (!res.ok) return [];
-    var data = await res.json();
-    if (data.showOnDesktop !== undefined) showOnDesktop = data.showOnDesktop;
-    if (data.cardTemplate && !cardTpl) cardTpl = data.cardTemplate;
-    return data.results || [];
-  }
-
-  async function loadMore(container) {
-    if (loading || exhausted) return;
-    loading = true;
-    var items = await fetchPage(feedPage);
-    if (items.length === 0) {
-      exhausted = true;
-      var s = container.querySelector(".home-feed-sentinel");
-      if (s) s.remove();
-      loading = false;
-      return;
-    }
-    var sentinel = container.querySelector(".home-feed-sentinel");
-    var fragment = document.createDocumentFragment();
-    var temp = document.createElement("div");
-    temp.innerHTML = items.map(renderCard).join("");
-    while (temp.firstChild) fragment.appendChild(temp.firstChild);
-    container.insertBefore(fragment, sentinel);
-    feedPage++;
-    loading = false;
   }
 
   function initStream(container, desktop, sentinel) {

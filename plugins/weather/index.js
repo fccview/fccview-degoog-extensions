@@ -13,7 +13,9 @@ const WEATHER_CODES = {
   96: "Thunderstorm with Hail", 99: "Thunderstorm with Hail"
 };
 
-function weatherIcon(code) {
+const WIND_DIRECTIONS = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"];
+
+const _weatherIcon = (code) => {
   if (code == null) return "ti-cloud";
   const c = Number(code);
   if (c <= 1) return "ti-sun";
@@ -23,31 +25,31 @@ function weatherIcon(code) {
   if ((c >= 61 && c <= 67) || (c >= 80 && c <= 82)) return "ti-cloud-rain";
   if ((c >= 71 && c <= 77) || c === 85 || c === 86) return "ti-snowflake";
   if (c >= 95) return "ti-cloud-storm";
+
   return "ti-cloud";
-}
+};
 
-const WIND_DIRECTIONS = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"];
-
-function windDirection(deg) {
+const _windDirection = (deg) => {
   if (deg == null || isNaN(deg)) return "";
   const i = Math.round(((deg % 360) / 22.5)) % 16;
-  return WIND_DIRECTIONS[i];
-}
 
-function formatDay(dateStr) {
+  return WIND_DIRECTIONS[i];
+};
+
+const _formatDay = (dateStr) => {
   const d = new Date(dateStr + "T12:00:00");
   return d.toLocaleDateString("en-US", { weekday: "short" });
-}
+};
 
-function formatTime(isoStr) {
+const _formatTime = (isoStr) => {
   if (!isoStr) return "—";
   const d = new Date(isoStr);
   return d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", hour12: false });
-}
+};  
 
-function render(data) {
+const _render = (data) => {
   return template.replace(/\{\{(\w+)\}\}/g, (_, key) => data[key] ?? "");
-}
+};
 
 export default {
   name: "Weather",
@@ -125,7 +127,7 @@ export default {
       const curUnits = weatherData.current_units || {};
       const dailyUnits = weatherData.daily_units || {};
 
-      const windDir = windDirection(current.wind_direction_10m);
+      const windDir = _windDirection(current.wind_direction_10m);
       const windStr = `${Math.round(current.wind_speed_10m)} ${curUnits.wind_speed_10m || "km/h"} ${windDir}`;
       const visibilityKm = current.visibility != null ? (current.visibility >= 1000 ? `${(current.visibility / 1000).toFixed(1)} km` : `${Math.round(current.visibility)} m`) : "—";
 
@@ -143,36 +145,36 @@ export default {
         for (let h = 0; h < hourlyTimes.length; h++) {
           const t = hourlyTimes[h];
           if (typeof t !== "string" || t.slice(0, 10) !== dateStr) continue;
-          const timeLabel = formatTime(t);
+          const timeLabel = _formatTime(t);
           const temp = hourlyTemp[h] != null ? `${Math.round(hourlyTemp[h])}` : "—";
           const code = hourlyCode[h];
           const desc = WEATHER_CODES[code] || "—";
           const precipPct = hourlyPrecipPct[h] != null ? `${Math.round(hourlyPrecipPct[h])}%` : "—";
           const precip = hourlyPrecip[h] != null && hourlyPrecip[h] > 0 ? `${hourlyPrecip[h].toFixed(1)}` : "—";
-          dayHours.push({ time: timeLabel, temp, desc, precipPct, precip, icon: weatherIcon(code) });
+          dayHours.push({ time: timeLabel, temp, desc, precipPct, precip, icon: _weatherIcon(code) });
         }
         hourlyByDay.push(dayHours);
       }
       const hourlyJson = JSON.stringify(hourlyByDay).replace(/"/g, "&quot;").replace(/&/g, "&amp;");
 
-      const mainIcon = weatherIcon(current.weather_code);
+      const mainIcon = _weatherIcon(current.weather_code);
       let weekRows = "";
       for (let i = 0; i < dailyDates.length; i++) {
-        const dayName = formatDay(dailyDates[i]);
+        const dayName = _formatDay(dailyDates[i]);
         const code = daily.weather_code?.[i];
-        const iconClass = weatherIcon(code);
+        const iconClass = _weatherIcon(code);
         const high = daily.temperature_2m_max?.[i] != null ? `${Math.round(daily.temperature_2m_max[i])}${dailyUnits.temperature_2m_max || "°"}` : "—";
         const low = daily.temperature_2m_min?.[i] != null ? `${Math.round(daily.temperature_2m_min[i])}${dailyUnits.temperature_2m_min || "°"}` : "—";
         const precipPct = daily.precipitation_probability_max?.[i] != null ? `${Math.round(daily.precipitation_probability_max[i])}%` : "—";
         weekRows += `<tr class="weather-week-row" data-day-index="${i}" role="button" tabindex="0"><td class="weather-day">${dayName}</td><td class="weather-day-icon"><i class="ti ${iconClass}"></i></td><td class="weather-day-temps">${high} / ${low}</td><td class="weather-day-precip"><i class="ti ti-droplet"></i> ${precipPct}</td></tr>`;
       }
 
-      const todaySunrise = formatTime(daily.sunrise?.[0]);
-      const todaySunset = formatTime(daily.sunset?.[0]);
+      const todaySunrise = _formatTime(daily.sunrise?.[0]);
+      const todaySunset = _formatTime(daily.sunset?.[0]);
 
       return {
         title: `Weather — ${locationName}`,
-        html: render({
+        html: _render({
           locationName,
           mainIcon,
           temp: `${Math.round(current.temperature_2m)}${curUnits.temperature_2m || "°C"}`,

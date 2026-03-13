@@ -6,16 +6,14 @@ const USER_AGENTS = [
   "Mozilla/5.0 (X11; Linux x86_64; rv:134.0) Gecko/20100101 Firefox/134.0",
 ];
 
-function getRandomUserAgent() {
-  return USER_AGENTS[Math.floor(Math.random() * USER_AGENTS.length)];
-}
-
-const ANONYMOUS_VIEW_BASE = "https://www.startpage.com/do/d/search";
+const BASE_URL = "https://www.startpage.com";
 const SERP_MARKER = "React.createElement(UIStartpage.AppSerpWeb, {";
 
 export const outgoingHosts = ["www.startpage.com", "startpage.com"];
 
-function extractSerpJson(html) {
+const _getRandomUserAgent = () => USER_AGENTS[Math.floor(Math.random() * USER_AGENTS.length)];
+
+const _extractSerpJson = (html) => {
   const idx = html.indexOf(SERP_MARKER);
   if (idx === -1) return null;
   const start = html.indexOf("{", idx + SERP_MARKER.length);
@@ -49,7 +47,7 @@ function extractSerpJson(html) {
   return null;
 }
 
-function htmlToText(str) {
+const _esc = (str) => {
   if (typeof str !== "string") return "";
   return str
     .replace(/&nbsp;/g, " ")
@@ -61,7 +59,19 @@ function htmlToText(str) {
     .replace(/<[^>]+>/g, " ")
     .replace(/\s+/g, " ")
     .trim();
-}
+};
+
+const _stripStartpageProxy = (url) => {
+  if (typeof url !== "string" || !url) return url;
+  try {
+    const u = new URL(url, BASE_URL);
+    if (u.pathname.includes("do/d/search")) {
+      const dest = u.searchParams.get("url");
+      if (dest) return dest;
+    }
+  } catch {}
+  return url;
+};
 
 export default class StartpageEngine {
   name = "Startpage";
@@ -89,11 +99,11 @@ export default class StartpageEngine {
     const p = Math.max(0, (page || 1) - 1);
     const params = new URLSearchParams({ q: query, cat: "web" });
     if (p > 0) params.set("page", String(p + 1));
-    const url = `https://www.startpage.com/sp/search?${params.toString()}`;
     const doFetch = context?.fetch ?? fetch;
-    const response = await doFetch(url, {
+
+    const response = await doFetch(`${BASE_URL}/sp/search?${params.toString()}`, {
       headers: {
-        "User-Agent": getRandomUserAgent(),
+        "User-Agent": _getRandomUserAgent(),
         Accept:
           "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
         "Accept-Language": "en-US,en;q=0.9",
@@ -107,8 +117,9 @@ export default class StartpageEngine {
       redirect: "follow",
       method: "GET",
     });
+
     const html = await response.text();
-    const jsonStr = extractSerpJson(html);
+    const jsonStr = _extractSerpJson(html);
     if (!jsonStr) return [];
 
     let data;
@@ -125,20 +136,25 @@ export default class StartpageEngine {
     if (!Array.isArray(mainline)) return [];
 
     const results = [];
+
     for (const block of mainline) {
       if (block?.display_type !== "web-google") continue;
       const items = block.results;
       if (!Array.isArray(items)) continue;
       for (const item of items) {
-        let url = item.clickUrl;
+        let url = _stripStartpageProxy(item.clickUrl ?? item.url ?? "");
+
         if (!url || typeof url !== "string" || !url.startsWith("http"))
           continue;
-        const title = htmlToText(item.title ?? "");
-        if (!title) continue;
-        const snippet = htmlToText(item.description ?? "");
 
-        if (this.useAnonymousView && !url.includes("startpage.com/")) {
-          url = `${ANONYMOUS_VIEW_BASE}?url=${encodeURIComponent(url)}`;
+        const title = _esc(item.title ?? "");
+
+        if (!title) continue;
+
+        const snippet = _esc(item.description ?? "");
+
+        if (this.useAnonymousView && typeof item.anonViewUrl === "string" && item.anonViewUrl) {
+          url = item.anonViewUrl;
         }
 
         results.push({
@@ -149,6 +165,7 @@ export default class StartpageEngine {
         });
       }
     }
+
     return results;
   }
 }

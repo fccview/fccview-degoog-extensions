@@ -22,8 +22,9 @@ const TZ_MAP = {
   gmt: "UTC",
 };
 
-function esc(s) {
+const _esc = (s) => {
   if (typeof s !== "string") return "";
+
   return s
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
@@ -31,10 +32,11 @@ function esc(s) {
     .replace(/"/g, "&quot;");
 }
 
-function resolveTimeZone(input) {
+const _resolveTimeZone = (input) => {
   const key = input.trim().toLowerCase().replace(/\s+/g, " ");
   if (TZ_MAP[key]) return TZ_MAP[key];
   const normalized = key.replace(/\s+/g, "_");
+  
   try {
     const formatter = new Intl.DateTimeFormat("en", { timeZone: normalized });
     formatter.format(new Date());
@@ -42,7 +44,7 @@ function resolveTimeZone(input) {
   } catch {
     return null;
   }
-}
+};
 
 export default {
   name: "Time",
@@ -61,11 +63,11 @@ export default {
         html: `<div class="command-result"><p>Usage: <code>!time &lt;city or timezone&gt;</code></p><p>Examples: <code>!time Tokyo</code>, <code>!time America/New_York</code></p></div>`,
       };
     }
-    const tz = resolveTimeZone(place);
+    const tz = _resolveTimeZone(place);
     if (!tz) {
       return {
         title: "Time",
-        html: `<div class="command-result"><p>Unknown timezone or city: <strong>${esc(place)}</strong></p></div>`,
+        html: `<div class="command-result"><p>Unknown timezone or city: <strong>${_esc(place)}</strong></p></div>`,
       };
     }
     const now = new Date();
@@ -84,7 +86,7 @@ export default {
       year: "numeric",
     });
     const label = tz.replace(/_/g, " ");
-    const html = `<div class="command-result time-result"><h3 class="time-place">${esc(label)}</h3><p class="time-time">${esc(timeStr)}</p><p class="time-date">${esc(dateStr)}</p></div>`;
+    const html = `<div class="command-result time-result"><h3 class="time-place">${_esc(label)}</h3><p class="time-time">${_esc(timeStr)}</p><p class="time-date">${_esc(dateStr)}</p></div>`;
     return { title: `Time: ${label}`, html };
   },
 };

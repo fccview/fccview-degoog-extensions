@@ -6,24 +6,24 @@ const CHARS_UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const CHARS_DIGIT = "0123456789";
 const CHARS_SYMBOL = "!@#$%^&*()-_=+[]{}|;:,.<>?";
 
-function esc(s) {
+const _esc = (s) => {
   if (typeof s !== "string") return "";
   return s
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
-}
+};
 
-function parseLength(args) {
+const _parseLength = (args) => {
   const t = args.trim();
   if (!t) return DEFAULT_LENGTH;
   const num = parseInt(t, 10);
   if (!Number.isFinite(num)) return DEFAULT_LENGTH;
   return Math.min(MAX_LENGTH, Math.max(MIN_LENGTH, num));
-}
+};
 
-function randomPassword(length) {
+const _randomPassword = (length) => {
   const pool = CHARS_LOWER + CHARS_UPPER + CHARS_DIGIT + CHARS_SYMBOL;
   const bytes = new Uint8Array(length);
   crypto.getRandomValues(bytes);
@@ -32,7 +32,7 @@ function randomPassword(length) {
     out += pool[bytes[i] % pool.length];
   }
   return out;
-}
+};
 
 export default {
   name: "Password",
@@ -44,9 +44,9 @@ export default {
   settingsSchema: [],
 
   execute(args) {
-    const length = parseLength(args);
-    const password = randomPassword(length);
-    const html = `<div class="command-result password-result"><p class="password-label">Generated password (${length} chars)</p><p class="password-value"><code>${esc(password)}</code></p><p class="password-hint">Copy and use in a password manager.</p></div>`;
+    const length = _parseLength(args);
+    const password = _randomPassword(length);
+    const html = `<div class="command-result password-result"><p class="password-label">Generated password (${length} chars)</p><p class="password-value"><code>${_esc(password)}</code></p><p class="password-hint">Copy and use in a password manager.</p></div>`;
     return { title: "Password", html };
   },
 };
