@@ -1,0 +1,411 @@
+/* =============================================================
+   Everforest theme for degoog
+   Variants: dark-hard, dark-medium (default), dark-soft,
+             light-hard, light-medium, light-soft
+   Palette ref: https://github.com/sainnhe/everforest
+   ============================================================= */
+
+/* ── Default (dark-medium) ─────────────────────────────────── */
+
+:root,
+[data-theme="dark"] {
+  --ef-bg0:      #2d353b;
+  --ef-bg1:      #343f44;
+  --ef-bg2:      #3d484d;
+  --ef-bg3:      #475258;
+  --ef-bg4:      #4f585e;
+  --ef-fg:       #d3c6aa;
+  --ef-grey0:    #7a8478;
+  --ef-grey1:    #859289;
+  --ef-grey2:    #9da9a0;
+  --ef-red:      #e67e80;
+  --ef-orange:   #e69875;
+  --ef-yellow:   #dbbc7f;
+  --ef-green:    #a7c080;
+  --ef-aqua:     #83c092;
+  --ef-blue:     #7fbbb3;
+  --ef-purple:   #d699b6;
+
+  --bg:              var(--ef-bg0);
+  --bg-light:        var(--ef-bg1);
+  --bg-hover:        var(--ef-bg2);
+  --border:          var(--ef-bg3);
+  --border-light:    var(--ef-bg2);
+  --text-primary:    var(--ef-fg);
+  --text-secondary:  var(--ef-grey2);
+  --text-link:       var(--ef-blue);
+  --text-link-visited: var(--ef-purple);
+  --text-cite:       var(--ef-aqua);
+  --text-snippet:    var(--ef-grey2);
+  --search-bar-bg:       var(--ef-bg1);
+  --search-bar-bg-hover: var(--ef-bg1);
+  --btn-bg:          var(--ef-bg3);
+  --btn-text:        var(--ef-fg);
+  --overlay-bg:      rgba(45, 53, 59, 0.88);
+  --white:           var(--ef-bg0);
+  --theme-bar-bg:    transparent;
+  --theme-bar-text:  var(--ef-grey2);
+  --theme-bar-border: var(--ef-bg3);
+  --theme-pagination-active-bg: var(--ef-green);
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.35);
+  --shadow-md: 0 6px 20px rgba(0,0,0,0.45);
+  --accent:          var(--ef-green);
+  --primary:         var(--ef-green);
+  --primary-hover:   var(--ef-aqua);
+  --primary-rgb:     167, 192, 128;
+  --danger:          var(--ef-red);
+  --warning:         var(--ef-yellow);
+  --success:         var(--ef-green);
+}
+
+/* ── Dark Hard ─────────────────────────────────────────────── */
+
+[data-everforest-variant="dark-hard"][data-theme="dark"],
+[data-everforest-variant="dark-hard"]:not([data-theme="light"]) {
+  --ef-bg0:   #1e2326;
+  --ef-bg1:   #272e33;
+  --ef-bg2:   #2e383c;
+  --ef-bg3:   #374145;
+  --ef-bg4:   #414b50;
+  --bg:           #1e2326;
+  --bg-light:     #272e33;
+  --bg-hover:     #2e383c;
+  --border:       #374145;
+  --border-light: #2e383c;
+  --overlay-bg:   rgba(30, 35, 38, 0.90);
+  --white:        #1e2326;
+  --search-bar-bg:       #272e33;
+  --search-bar-bg-hover: #272e33;
+  --btn-bg:       #374145;
+}
+
+/* ── Dark Medium (same as default, explicit for selector) ───── */
+
+[data-everforest-variant="dark-medium"][data-theme="dark"],
+[data-everforest-variant="dark-medium"]:not([data-theme="light"]) {
+  --ef-bg0:   #2d353b;
+  --ef-bg1:   #343f44;
+  --ef-bg2:   #3d484d;
+  --ef-bg3:   #475258;
+  --bg:           #2d353b;
+  --bg-light:     #343f44;
+  --bg-hover:     #3d484d;
+  --border:       #475258;
+  --border-light: #3d484d;
+  --overlay-bg:   rgba(45, 53, 59, 0.88);
+  --white:        #2d353b;
+  --search-bar-bg:       #343f44;
+  --search-bar-bg-hover: #343f44;
+  --btn-bg:       #475258;
+}
+
+/* ── Dark Soft ──────────────────────────────────────────────── */
+
+[data-everforest-variant="dark-soft"][data-theme="dark"],
+[data-everforest-variant="dark-soft"]:not([data-theme="light"]) {
+  --ef-bg0:   #333c43;
+  --ef-bg1:   #3a464c;
+  --ef-bg2:   #434f55;
+  --ef-bg3:   #4e595f;
+  --bg:           #333c43;
+  --bg-light:     #3a464c;
+  --bg-hover:     #434f55;
+  --border:       #4e595f;
+  --border-light: #434f55;
+  --overlay-bg:   rgba(51, 60, 67, 0.88);
+  --white:        #333c43;
+  --search-bar-bg:       #3a464c;
+  --search-bar-bg-hover: #3a464c;
+  --btn-bg:       #4e595f;
+}
+
+/* ── Light shared base ──────────────────────────────────────── */
+
+[data-everforest-variant^="light"][data-theme="light"],
+[data-everforest-variant^="light"] {
+  --ef-fg:     #5c6a72;
+  --ef-grey0:  #a6b0a0;
+  --ef-grey1:  #939f91;
+  --ef-grey2:  #829181;
+  --ef-red:    #f85552;
+  --ef-orange: #f57d26;
+  --ef-yellow: #dfa000;
+  --ef-green:  #8da101;
+  --ef-aqua:   #35a77c;
+  --ef-blue:   #3a94c5;
+  --ef-purple: #df69ba;
+
+  --text-primary:    #5c6a72;
+  --text-secondary:  #829181;
+  --text-link:       #3a94c5;
+  --text-link-visited: #df69ba;
+  --text-cite:       #35a77c;
+  --text-snippet:    #829181;
+  --overlay-bg:      rgba(253, 246, 227, 0.92);
+  --theme-bar-text:  #829181;
+  --shadow-sm: 0 2px 8px rgba(92,106,114,0.12);
+  --shadow-md: 0 6px 20px rgba(92,106,114,0.18);
+  --primary:         #8da101;
+  --primary-hover:   #35a77c;
+  --primary-rgb:     141, 161, 1;
+  --accent:          #8da101;
+  --danger:          #f85552;
+  --warning:         #dfa000;
+  --success:         #8da101;
+  --btn-text:        #ffffff;
+  --theme-pagination-active-bg: #8da101;
+}
+
+/* ── Light Hard ─────────────────────────────────────────────── */
+
+[data-everforest-variant="light-hard"][data-theme="light"],
+[data-everforest-variant="light-hard"] {
+  --ef-bg0:   #fff9e8;
+  --ef-bg1:   #f4f0d9;
+  --ef-bg2:   #edeada;
+  --ef-bg3:   #e5dfc5;
+  --bg:           #fff9e8;
+  --bg-light:     #f4f0d9;
+  --bg-hover:     #edeada;
+  --border:       #e5dfc5;
+  --border-light: #edeada;
+  --white:        #fff9e8;
+  --search-bar-bg:       #f4f0d9;
+  --search-bar-bg-hover: #f4f0d9;
+  --btn-bg:       #8da101;
+  --theme-bar-border: #e5dfc5;
+}
+
+/* ── Light Medium ───────────────────────────────────────────── */
+
+[data-everforest-variant="light-medium"][data-theme="light"],
+[data-everforest-variant="light-medium"] {
+  --ef-bg0:   #fdf6e3;
+  --ef-bg1:   #f4f0d9;
+  --ef-bg2:   #edeada;
+  --ef-bg3:   #e5dfc5;
+  --bg:           #fdf6e3;
+  --bg-light:     #f4f0d9;
+  --bg-hover:     #edeada;
+  --border:       #e5dfc5;
+  --border-light: #edeada;
+  --white:        #fdf6e3;
+  --search-bar-bg:       #f4f0d9;
+  --search-bar-bg-hover: #f4f0d9;
+  --btn-bg:       #8da101;
+  --theme-bar-border: #e5dfc5;
+}
+
+/* ── Light Soft ─────────────────────────────────────────────── */
+
+[data-everforest-variant="light-soft"][data-theme="light"],
+[data-everforest-variant="light-soft"] {
+  --ef-bg0:   #f8f0dc;
+  --ef-bg1:   #f2ebce;
+  --ef-bg2:   #eae4c4;
+  --ef-bg3:   #e1dab6;
+  --bg:           #f8f0dc;
+  --bg-light:     #f2ebce;
+  --bg-hover:     #eae4c4;
+  --border:       #e1dab6;
+  --border-light: #eae4c4;
+  --white:        #f8f0dc;
+  --search-bar-bg:       #f2ebce;
+  --search-bar-bg-hover: #f2ebce;
+  --btn-bg:       #8da101;
+  --theme-bar-border: #e1dab6;
+}
+
+/* =============================================================
+   UI STYLES (shared across all variants)
+   ============================================================= */
+
+html,
+body {
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: -2;
+  pointer-events: none;
+}
+
+body::after {
+  content: none;
+}
+
+/* ── Header ─────────────────────────────────────────────────── */
+
+.header,
+.results-header {
+  background: transparent;
+  border-bottom: 1px solid var(--border);
+}
+
+.logo-container .logo,
+.results-logo {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--primary);
+  text-shadow: none;
+  filter: none;
+}
+
+.logo-container .logo span,
+.results-logo span {
+  color: var(--text-secondary);
+}
+
+/* ── Search bar ─────────────────────────────────────────────── */
+
+.search-bar,
+.results-search-bar {
+  background: var(--search-bar-bg);
+  border: 2px solid transparent;
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.2s ease;
+}
+
+.search-bar:focus-within,
+.results-search-bar:focus-within {
+  border-color: var(--primary);
+}
+
+.search-bar.ac-open,
+.results-search-bar.ac-open {
+  border-color: var(--primary);
+  border-radius: 12px 12px 0 0;
+}
+
+.search-bar.ac-open .ac-dropdown,
+.results-search-bar.ac-open .ac-dropdown {
+  left: -2px;
+  right: -2px;
+  border-left:   2px solid var(--primary);
+  border-right:  2px solid var(--primary);
+  border-bottom: 2px solid var(--primary);
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+}
+
+/* ── Buttons ────────────────────────────────────────────────── */
+
+.search-btn,
+.lucky-btn,
+.button-row button {
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  box-shadow: none;
+  transition: background-color 0.2s ease;
+}
+
+.search-btn:hover,
+.lucky-btn:hover,
+.button-row button:hover {
+  background: var(--bg-hover);
+  color: var(--primary);
+}
+
+/* ── Results ────────────────────────────────────────────────── */
+
+.result-title a {
+  color: var(--text-link);
+  text-shadow: none;
+}
+
+.result-title a:visited {
+  color: var(--text-link-visited);
+}
+
+.result-title a:hover {
+  color: var(--primary);
+  text-shadow: none;
+}
+
+.result-url,
+.result-cite {
+  color: var(--text-cite);
+}
+
+.result-snippet {
+  color: var(--text-snippet);
+}
+
+/* ── Tabs / pagination ──────────────────────────────────────── */
+
+.results-tab.active::after {
+  background: var(--primary);
+  box-shadow: none;
+}
+
+.results-tab:hover {
+  color: var(--primary);
+}
+
+.pagination .active {
+  background: var(--theme-pagination-active-bg);
+  color: var(--btn-text);
+  border: none;
+  box-shadow: none;
+  font-weight: 600;
+}
+
+/* ── Cards / panels ─────────────────────────────────────────── */
+
+.glance-box,
+.knowledge-panel,
+.result-card {
+  background: var(--bg-light);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: none;
+}
+
+.ac-dropdown {
+  background: var(--bg-light);
+  border: none;
+  box-shadow: var(--shadow-sm);
+}
+
+.ac-item:hover,
+.ac-item.selected {
+  background: var(--bg-hover);
+}
+
+/* ── Scrollbar ──────────────────────────────────────────────── */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+/* ── Mobile ─────────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .search-bar,
+  .results-search-bar {
+    border-radius: 10px;
+  }
+}
