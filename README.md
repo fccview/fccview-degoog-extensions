@@ -1,4 +1,4 @@
-# fccview-degoog-extensions
+screentshots# fccview-degoog-extensions
 
 Official extensions pack for degoog.
 
