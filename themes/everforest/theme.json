@@ -1,0 +1,19 @@
+{
+  "name": "Everforest",
+  "author": "claude",
+  "description": "Everforest — warm green forest palette. Dark Hard/Medium/Soft and Light Hard/Medium/Soft.",
+  "version": "2.0.0",
+  "css": "style.css",
+  "settingsSchema": [
+    {
+      "key": "variant",
+      "label": "Variant",
+      "type": "select",
+      "options": ["dark-hard", "dark-medium", "dark-soft", "light-hard", "light-medium", "light-soft"],
+      "description": "Dark Hard = deepest forest night, Medium = balanced, Soft = muted. Light variants for daytime use."
+    }
+  ],
+  "dataAttrsFromSettings": {
+    "variant": "everforest-variant"
+  }
+}
