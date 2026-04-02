@@ -194,6 +194,24 @@ Starter-inspired color schemes: Pikachu (yellow), Bulbasaur (green), Charmander 
 ---
 
 <details>
+<summary>Transports</summary>
+
+### FlareSolverr
+
+Bypass Cloudflare challenges via a [FlareSolverr](https://github.com/FlareSolverr/FlareSolverr) instance. Once configured, engines can select "flaresolverr" as their outgoing transport. Requires a running FlareSolverr instance.
+
+<details>
+<summary>Screenshot</summary>
+
+![Ecosia](transports/flaresolverr/screenshots/1.png)
+
+</details>
+
+</details>
+
+---
+
+<details>
 <summary>Engines</summary>
 
 ### DuckDuckGo Images

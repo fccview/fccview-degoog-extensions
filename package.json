@@ -1,6 +1,6 @@
 {
     "name": "fccview-degoog-extensions",
-    "description": "Plugins and themes for degoog search.",
+    "description": "Plugins, themes, engines, and transports for degoog search.",
     "repo-image": "https://avatars.githubusercontent.com/u/112867047?s=512",
     "author": "fccview",
     "plugins": [
@@ -114,6 +114,14 @@
         "path": "themes/pokemon",
         "name": "Pokemon",
         "description": "Starter-inspired: Pikachu (yellow), Bulbasaur (green), Charmander (orange), Squirtle (blue).",
+        "version": "1.0.0"
+      }
+    ],
+    "transports": [
+      {
+        "path": "transports/flaresolverr",
+        "name": "FlareSolverr",
+        "description": "Bypass Cloudflare challenges via a FlareSolverr instance. Once configured, engines can select flaresolverr as their outgoing transport.",
         "version": "1.0.0"
       }
     ],
