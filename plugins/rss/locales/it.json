@@ -1,0 +1,17 @@
+{
+  "rss": {
+    "name": "Feed RSS in home",
+    "description": "Lettore di feed RSS/Atom con integrazione nella home.",
+    "settings": {
+      "urls": {
+        "label": "URL dei feed",
+        "placeholder": "https://esempio.com/feed.xml",
+        "description": "Gestisci gli URL dei feed RSS/Atom. Rimuovi o aggiungi feed qui sotto."
+      },
+      "showOnDesktop": {
+        "label": "Mostra notizie su desktop",
+        "description": "Mostra il feed anche sulla home in desktop (scorrimento orizzontale)."
+      }
+    }
+  }
+}

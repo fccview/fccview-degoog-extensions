@@ -1,0 +1,14 @@
+{
+  "math-slot": {
+    "name": "Math",
+    "description": "Evaluates math expressions natively via API.",
+    "settings": {
+      "enabled": {
+        "label": "Enabled"
+      }
+    },
+    "template": {
+      "equals": "="
+    }
+  }
+}

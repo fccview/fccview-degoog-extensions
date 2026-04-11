@@ -1,0 +1,23 @@
+{
+  "github-slot": {
+    "name": "GitHub",
+    "description": "Se i risultati includono repository o utenti GitHub, mostra informazioni sopra i risultati.",
+    "settings": {
+      "apiToken": {
+        "label": "Token API GitHub",
+        "placeholder": "Opzionale, per un limite più alto",
+        "description": "Personal access token (opzionale). Senza token il limite è 60 richieste/ora."
+      },
+      "maxRepos": {
+        "label": "Repo massime da mostrare",
+        "placeholder": "3",
+        "description": "Numero massimo di schede repository (1–5)."
+      },
+      "maxUsers": {
+        "label": "Utenti massimi da mostrare",
+        "placeholder": "2",
+        "description": "Numero massimo di schede utente (1–3)."
+      }
+    }
+  }
+}

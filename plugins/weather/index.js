@@ -89,13 +89,22 @@ export default {
 
   async execute(args) {
     const query = args.trim() || defaultCity;
+    const t = this.t;
+    const trCode = (code) => {
+      if (code == null || code === "") return "—";
+      const k = `plugin-weather.codes.${code}`;
+      if (!t) return WEATHER_CODES[code] || "—";
+      const v = t(k);
+      if (v !== k) return v;
+      return WEATHER_CODES[code] || t("plugin-weather.codes.unknown") || "—";
+    };
 
     if (!query) {
       return {
         title: "Weather",
         html: `<div class="command-result">
-          <p>Usage: <code>!weather &lt;city&gt;</code></p>
-          <p>You can also set a default city in Settings &rarr; Plugins.</p>
+          <p>{{ t:plugin-weather.usage.needCityLine1 }}</p>
+          <p>{{ t:plugin-weather.usage.needCityLine2 }}</p>
         </div>`,
       };
     }
@@ -106,9 +115,10 @@ export default {
       const geoData = await geoRes.json();
 
       if (!geoData.results || geoData.results.length === 0) {
+        const q = String(query).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
         return {
           title: "Weather Error",
-          html: `<div class="command-result"><p>Could not find location: <strong>${query}</strong></p></div>`,
+          html: `<div class="command-result"><p>{{ t:plugin-weather.usage.notFoundBefore }} <strong>${q}</strong></p></div>`,
         };
       }
 
@@ -148,7 +158,7 @@ export default {
           const timeLabel = _formatTime(t);
           const temp = hourlyTemp[h] != null ? `${Math.round(hourlyTemp[h])}` : "—";
           const code = hourlyCode[h];
-          const desc = WEATHER_CODES[code] || "—";
+          const desc = trCode(code);
           const precipPct = hourlyPrecipPct[h] != null ? `${Math.round(hourlyPrecipPct[h])}%` : "—";
           const precip = hourlyPrecip[h] != null && hourlyPrecip[h] > 0 ? `${hourlyPrecip[h].toFixed(1)}` : "—";
           dayHours.push({ time: timeLabel, temp, desc, precipPct, precip, icon: _weatherIcon(code) });
@@ -178,7 +188,7 @@ export default {
           locationName,
           mainIcon,
           temp: `${Math.round(current.temperature_2m)}${curUnits.temperature_2m || "°C"}`,
-          desc: WEATHER_CODES[current.weather_code] || "Unknown",
+          desc: trCode(current.weather_code),
           feels: `${Math.round(current.apparent_temperature)}${curUnits.apparent_temperature || "°C"}`,
           high: daily.temperature_2m_max?.[0] != null ? `${Math.round(daily.temperature_2m_max[0])}${dailyUnits.temperature_2m_max || "°"}` : "—",
           low: daily.temperature_2m_min?.[0] != null ? `${Math.round(daily.temperature_2m_min[0])}${dailyUnits.temperature_2m_min || "°"}` : "—",
@@ -197,12 +207,14 @@ export default {
 
     } catch (error) {
       const errMessage = error instanceof Error ? error.message : JSON.stringify(error, Object.getOwnPropertyNames(error));
+      const q = String(query).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+      const em = String(errMessage || "Unknown Network Error").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
       return {
         title: "Weather Error",
         html: `<div class="command-result">
-          <p>Could not fetch weather for <strong>${query}</strong>.</p>
-          <p>Error details: <code>${errMessage || "Unknown Network Error"}</code></p>
+          <p>{{ t:plugin-weather.usage.fetchErrorBefore }} <strong>${q}</strong>.</p>
+          <p>{{ t:plugin-weather.usage.errorDetails }} <code>${em}</code></p>
         </div>`,
       };
     }

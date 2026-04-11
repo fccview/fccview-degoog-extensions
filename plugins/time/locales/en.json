@@ -1,0 +1,6 @@
+{
+  "plugin-time": {
+    "name": "Time",
+    "description": "Show current time in a timezone or city."
+  }
+}

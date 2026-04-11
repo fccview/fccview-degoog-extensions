@@ -1,0 +1,17 @@
+{
+  "rss": {
+    "name": "Home RSS Feeds",
+    "description": "RSS/Atom news feed reader with home page integration",
+    "settings": {
+      "urls": {
+        "label": "Feed URLs",
+        "placeholder": "https://example.com/feed.xml",
+        "description": "Manage your RSS/Atom feed URLs. Remove individual feeds or add new ones below."
+      },
+      "showOnDesktop": {
+        "label": "Show news on desktop",
+        "description": "Display the news feed on the home page on desktop too (horizontal scrolling)."
+      }
+    }
+  }
+}

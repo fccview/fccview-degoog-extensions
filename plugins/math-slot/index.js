@@ -73,7 +73,7 @@ export const slot = {
         result = new Intl.NumberFormat('en-US', { maximumFractionDigits: 6 }).format(numResult);
       }
       
-      const finalHtml = (templateHtml || '<div class="math-widget">{{query}} = {{result}}</div>')
+      const finalHtml = (templateHtml || '<div class="math-widget"><div class="math-body"><div class="math-query">{{query}}</div><div class="math-equals">{{ t:math-slot.template.equals }}</div><div class="math-result">{{result}}</div></div></div>')
         .replace("{{query}}", _esc(_formatMath(originalQuery)))
         .replace("{{result}}", _esc(result));
       
