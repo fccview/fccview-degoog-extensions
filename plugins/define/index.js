@@ -29,7 +29,7 @@ export default {
     if (!word) {
       return {
         title: "Define",
-        html: `<div class="command-result"><p>Usage: <code>!define &lt;word&gt;</code> or try &quot;define serendipity&quot;</p></div>`,
+        html: `<div class="command-result"><p>{{ t:plugin-define.usage }}</p></div>`,
       };
     }
     try {
@@ -38,7 +38,7 @@ export default {
         if (res.status === 404) {
           return {
             title: "Define",
-            html: `<div class="command-result"><p>No definition found for <strong>${_esc(word)}</strong>.</p></div>`,
+            html: `<div class="command-result"><p>{{ t:plugin-define.notFoundBefore }} <strong>${_esc(word)}</strong>.</p></div>`,
           };
         }
         throw new Error(res.statusText);
@@ -48,7 +48,7 @@ export default {
       if (!entry) {
         return {
           title: "Define",
-          html: `<div class="command-result"><p>No definition found for <strong>${_esc(word)}</strong>.</p></div>`,
+          html: `<div class="command-result"><p>{{ t:plugin-define.notFoundBefore }} <strong>${_esc(word)}</strong>.</p></div>`,
         };
       }
       const wordTitle = _esc(entry.word || word);
@@ -72,7 +72,7 @@ export default {
     } catch (err) {
       return {
         title: "Define",
-        html: `<div class="command-result"><p>Could not fetch definition: ${_esc(String(err.message))}</p></div>`,
+        html: `<div class="command-result"><p>{{ t:plugin-define.fetchError }} ${_esc(String(err.message))}</p></div>`,
       };
     }
   },

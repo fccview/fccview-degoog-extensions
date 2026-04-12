@@ -1,0 +1,70 @@
+{
+  "plugin-weather": {
+    "name": "Meteo",
+    "description": "Mostra le informazioni meteo con Open-Meteo.",
+    "settings": {
+      "defaultCity": {
+        "label": "Città predefinita",
+        "placeholder": "Londra",
+        "description": "Città usata quando si lancia !weather senza argomenti"
+      },
+      "fahrenheit": {
+        "label": "Usa Fahrenheit",
+        "description": "Mostra la temperatura in °F invece di °C"
+      }
+    },
+    "template": {
+      "feelsPrefix": "Percepita",
+      "highLabel": "Max",
+      "lowLabel": "Min",
+      "uvSuffix": "UV",
+      "weekTitle": "7 giorni",
+      "weekHint": "clicca un giorno per le ore",
+      "colDay": "Giorno",
+      "colHighLow": "Max / Min",
+      "colPrecip": "Precip."
+    },
+    "usage": {
+      "needCityLine1": "Uso: <code>!weather &lt;città&gt;</code>",
+      "needCityLine2": "Puoi anche impostare una città predefinita in Impostazioni → Plugin.",
+      "notFoundBefore": "Località non trovata:",
+      "fetchErrorBefore": "Impossibile recuperare il meteo per",
+      "errorDetails": "Dettagli errore:"
+    },
+    "codes": {
+      "0": "Cielo sereno",
+      "1": "Prevalentemente sereno",
+      "2": "Parzialmente nuvoloso",
+      "3": "Coperto",
+      "45": "Nebbia",
+      "48": "Nebbia",
+      "51": "Pioggerella",
+      "53": "Pioggerella",
+      "55": "Pioggerella",
+      "56": "Pioggerella gelata",
+      "57": "Pioggerella gelata",
+      "61": "Pioggia",
+      "63": "Pioggia",
+      "65": "Pioggia forte",
+      "66": "Pioggia gelata",
+      "67": "Pioggia gelata",
+      "71": "Neve",
+      "73": "Neve",
+      "75": "Neve forte",
+      "77": "Grani di neve",
+      "80": "Rovesci",
+      "81": "Rovesci",
+      "82": "Rovesci forti",
+      "85": "Rovesci di neve",
+      "86": "Rovesci di neve forti",
+      "95": "Temporale",
+      "96": "Temporale con grandine",
+      "99": "Temporale con grandine",
+      "unknown": "Sconosciuto"
+    },
+    "script": {
+      "hourlyAria": "Previsione oraria",
+      "mmSuffix": "mm"
+    }
+  }
+}

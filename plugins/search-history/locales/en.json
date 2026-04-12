@@ -1,0 +1,13 @@
+{
+  "plugin-search-history": {
+    "name": "Search history",
+    "description": "Stores search history in data/history.json with timestamps; !history shows a paginated, deletable list.",
+    "settings": {
+      "maxEntries": {
+        "label": "Max entries",
+        "placeholder": "1000",
+        "description": "Maximum number of history entries to keep (oldest removed when exceeded)."
+      }
+    }
+  }
+}

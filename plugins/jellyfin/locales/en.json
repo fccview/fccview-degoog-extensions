@@ -1,0 +1,23 @@
+{
+  "plugin-jellyfin": {
+    "name": "Jellyfin",
+    "description": "Search your Jellyfin media library",
+    "settings": {
+      "url": {
+        "label": "Jellyfin URL",
+        "placeholder": "https://your-jellyfin-server.com",
+        "description": "Base URL of your Jellyfin server"
+      },
+      "apiKey": {
+        "label": "API Key",
+        "placeholder": "Enter your Jellyfin API key",
+        "description": "Found in Jellyfin Dashboard → API Keys"
+      },
+      "headerName": {
+        "label": "Auth Header",
+        "placeholder": "X-Emby-Token",
+        "description": "HTTP header used to authenticate image proxy requests. Change only if your server requires a different header."
+      }
+    }
+  }
+}

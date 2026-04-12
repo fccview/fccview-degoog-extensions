@@ -1,0 +1,23 @@
+{
+  "github-slot": {
+    "name": "GitHub",
+    "description": "When search results include GitHub repos or users, shows styled info above results.",
+    "settings": {
+      "apiToken": {
+        "label": "GitHub API token",
+        "placeholder": "Optional, for higher rate limit",
+        "description": "Personal access token (optional). Without it, API is limited to 60 requests/hour."
+      },
+      "maxRepos": {
+        "label": "Max repos to show",
+        "placeholder": "3",
+        "description": "Maximum number of repo cards to display (1–5)."
+      },
+      "maxUsers": {
+        "label": "Max users to show",
+        "placeholder": "2",
+        "description": "Maximum number of user cards to display (1–3)."
+      }
+    }
+  }
+}

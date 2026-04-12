@@ -1,0 +1,43 @@
+{
+  "plugin-meilisearch": {
+    "name": "Meilisearch",
+    "description": "Cerca nei tuoi indici Meilisearch",
+    "settings": {
+      "url": {
+        "label": "URL Meilisearch",
+        "placeholder": "http://localhost:7700",
+        "description": "URL base dell'istanza Meilisearch"
+      },
+      "apiKey": {
+        "label": "Chiave API",
+        "placeholder": "Lascia vuoto se non serve",
+        "description": "Chiave master o di ricerca (opzionale)"
+      },
+      "indexes": {
+        "label": "Indici",
+        "placeholder": "mio_indice,altro_indice",
+        "description": "Elenco di indici separati da virgola"
+      },
+      "titleField": {
+        "label": "Campo titolo",
+        "placeholder": "title",
+        "description": "Campo del documento da usare come titolo del risultato"
+      },
+      "urlField": {
+        "label": "Campo URL",
+        "placeholder": "url",
+        "description": "Campo del documento da usare come link del risultato"
+      },
+      "contentField": {
+        "label": "Campo contenuto",
+        "placeholder": "content",
+        "description": "Campo del documento da usare come anteprima del risultato"
+      },
+      "thumbnailField": {
+        "label": "Campo miniatura",
+        "placeholder": "thumbnail",
+        "description": "Campo per l'immagine di anteprima (opzionale)"
+      }
+    }
+  }
+}

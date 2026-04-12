@@ -1,0 +1,9 @@
+{
+  "plugin-define": {
+    "name": "Define",
+    "description": "Look up word definitions using the Free Dictionary API.",
+    "usage": "Usage: <code>!define &lt;word&gt;</code> or try &quot;define serendipity&quot;",
+    "notFoundBefore": "No definition found for",
+    "fetchError": "Could not fetch definition:"
+  }
+}

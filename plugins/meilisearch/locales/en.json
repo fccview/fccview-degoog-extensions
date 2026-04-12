@@ -1,0 +1,43 @@
+{
+  "plugin-meilisearch": {
+    "name": "Meilisearch",
+    "description": "Search across your Meilisearch indexes",
+    "settings": {
+      "url": {
+        "label": "Meilisearch URL",
+        "placeholder": "http://localhost:7700",
+        "description": "Base URL of your Meilisearch instance"
+      },
+      "apiKey": {
+        "label": "API Key",
+        "placeholder": "Leave blank if no key is set",
+        "description": "Optional master or search API key"
+      },
+      "indexes": {
+        "label": "Indexes",
+        "placeholder": "my_index,another_index",
+        "description": "Comma-separated list of indexes to search"
+      },
+      "titleField": {
+        "label": "Title Field",
+        "placeholder": "title",
+        "description": "Document field to use as the result title"
+      },
+      "urlField": {
+        "label": "URL Field",
+        "placeholder": "url",
+        "description": "Document field to use as the result link"
+      },
+      "contentField": {
+        "label": "Content Field",
+        "placeholder": "content",
+        "description": "Document field to use as the result snippet"
+      },
+      "thumbnailField": {
+        "label": "Thumbnail Field",
+        "placeholder": "thumbnail",
+        "description": "Document field for the result thumbnail image (optional)"
+      }
+    }
+  }
+}

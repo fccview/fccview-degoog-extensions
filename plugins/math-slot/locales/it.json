@@ -1,0 +1,14 @@
+{
+  "math-slot": {
+    "name": "Matematica",
+    "description": "Valuta espressioni matematiche tramite API.",
+    "settings": {
+      "enabled": {
+        "label": "Attivo"
+      }
+    },
+    "template": {
+      "equals": "="
+    }
+  }
+}

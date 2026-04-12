@@ -1,0 +1,13 @@
+{
+  "tmdb": {
+    "name": "TMDb",
+    "description": "Shows movie/TV show details above search results.",
+    "settings": {
+      "apiKey": {
+        "label": "API Key",
+        "placeholder": "Free at themoviedb.org",
+        "description": "Key is needed in order to get cast photos, filmography, movie/TV search. Get one at https://www.themoviedb.org/settings/api"
+      }
+    }
+  }
+}

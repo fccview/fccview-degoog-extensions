@@ -62,13 +62,13 @@
     const strip = document.createElement("div");
     strip.className = "weather-hourly-strip";
     strip.setAttribute("role", "region");
-    strip.setAttribute("aria-label", "Hourly forecast");
+    strip.setAttribute("aria-label", t("plugin-weather.script.hourlyAria"));
 
     for (let i = 0; i < hours.length; i++) {
       const h = hours[i];
       const card = document.createElement("div");
       card.className = "weather-hour-card";
-      const precip = (h.precip && h.precip !== "—") ? "<span class=\"weather-hour-precip\">" + _escapeHtml(h.precip) + " mm</span>" : "";
+      const precip = (h.precip && h.precip !== "—") ? "<span class=\"weather-hour-precip\">" + _escapeHtml(h.precip) + " " + _escapeHtml(t("plugin-weather.script.mmSuffix")) + "</span>" : "";
       card.innerHTML = "<span class=\"weather-hour-time\">" + _escapeHtml(h.time) + "</span><i class=\"ti " + _escapeHtml(h.icon || "ti-cloud") + " weather-hour-icon\"></i><span class=\"weather-hour-temp\">" + _escapeHtml(h.temp) + "°</span>" + precip;
       strip.appendChild(card);
     }

@@ -1,0 +1,70 @@
+{
+  "plugin-weather": {
+    "name": "Weather",
+    "description": "Shows weather information using Open-Meteo.",
+    "settings": {
+      "defaultCity": {
+        "label": "Default City",
+        "placeholder": "London",
+        "description": "City to use when !weather is run without an argument"
+      },
+      "fahrenheit": {
+        "label": "Use Fahrenheit",
+        "description": "Display temperature in °F instead of °C"
+      }
+    },
+    "template": {
+      "feelsPrefix": "Feels like",
+      "highLabel": "H",
+      "lowLabel": "L",
+      "uvSuffix": "UV",
+      "weekTitle": "7-day",
+      "weekHint": "click a day for hourly",
+      "colDay": "Day",
+      "colHighLow": "High / Low",
+      "colPrecip": "Precip"
+    },
+    "usage": {
+      "needCityLine1": "Usage: <code>!weather &lt;city&gt;</code>",
+      "needCityLine2": "You can also set a default city in Settings → Plugins.",
+      "notFoundBefore": "Could not find location:",
+      "fetchErrorBefore": "Could not fetch weather for",
+      "errorDetails": "Error details:"
+    },
+    "codes": {
+      "0": "Clear sky",
+      "1": "Mainly clear",
+      "2": "Partly cloudy",
+      "3": "Overcast",
+      "45": "Fog",
+      "48": "Fog",
+      "51": "Drizzle",
+      "53": "Drizzle",
+      "55": "Drizzle",
+      "56": "Freezing drizzle",
+      "57": "Freezing drizzle",
+      "61": "Rain",
+      "63": "Rain",
+      "65": "Heavy rain",
+      "66": "Freezing rain",
+      "67": "Freezing rain",
+      "71": "Snow",
+      "73": "Snow",
+      "75": "Heavy snow",
+      "77": "Snow grains",
+      "80": "Rain showers",
+      "81": "Rain showers",
+      "82": "Heavy rain showers",
+      "85": "Snow showers",
+      "86": "Heavy snow showers",
+      "95": "Thunderstorm",
+      "96": "Thunderstorm with hail",
+      "99": "Thunderstorm with hail",
+      "unknown": "Unknown"
+    },
+    "script": {
+      "hourlyAria": "Hourly forecast",
+      "mmSuffix": "mm"
+    }
+  }
+}

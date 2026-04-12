@@ -1,0 +1,6 @@
+{
+  "plugin-password": {
+    "name": "Password",
+    "description": "Generate a random password."
+  }
+}

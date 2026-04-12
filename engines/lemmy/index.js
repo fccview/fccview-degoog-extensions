@@ -1,11 +1,7 @@
-export const outgoingHosts = ["lemmy.ml", "lemmy.world", "lemmy.radio", "lemmy.com"];
+export const outgoingHosts = ["*"];
 
-const BASE_URL = "https://lemmy.world";
-const SEARCH_URL = `${BASE_URL}/api/v3/search?`;
+const DEFAULT_INSTANCE = "https://lemmy.world";
 const SEARCH_LIMIT = 20;
-const COMMENT_URL = `${BASE_URL}/comment/`;
-const POST_URL = `${BASE_URL}/post/`;
-const COMMUNITY_URL = `${BASE_URL}/c/`;
 
 const USER_AGENTS = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
@@ -17,11 +13,25 @@ const USER_AGENTS = [
 
 const _getRandomUserAgent = () => USER_AGENTS[Math.floor(Math.random() * USER_AGENTS.length)];
 
+const _normalizeInstance = (value) => {
+    const trimmed = (value || "").trim().replace(/\/+$/, "");
+    if (!trimmed) return DEFAULT_INSTANCE;
+    return /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
+};
+
 export default class LemmyEngine {
-  name = "Lemmy World";
+  name = "Lemmy";
   bangShortcut = "lemmy";
 
   settingsSchema = [
+    {
+      key: "instanceUrl",
+      label: "Instance URL",
+      type: "url",
+      placeholder: "https://lemmy.world",
+      description: "Custom Lemmy instance to query. Leave blank to use lemmy.world",
+      default: "https://lemmy.world"
+    },
     {
       key: "searchType",
       label: "Search Type",
@@ -50,6 +60,7 @@ export default class LemmyEngine {
   searchType = "All"
 
   configure(settings) {
+    this.instanceUrl = _normalizeInstance(settings.instanceUrl);
     this.searchType = settings.searchType || "All";
     this.sort = settings.sort || "New";
     this.showNSFW = settings.showNSFW || false;
@@ -65,7 +76,8 @@ export default class LemmyEngine {
       show_nsfw: this.showNSFW ? "true" : "false",
     });
 
-    const url = `${SEARCH_URL}${params.toString()}`;
+    const baseUrl = this.instanceUrl || DEFAULT_INSTANCE;
+    const url = `${baseUrl}/api/v3/search?${params.toString()}`;
     const doFetch = context?.fetch ?? fetch;
 
     try {
@@ -86,7 +98,7 @@ export default class LemmyEngine {
               if (!comm) continue;
               results.push({
                   title: comm.title || comm.name || "",
-                  url: comm.actor_id || `${COMMUNITY_URL}${comm.name}`,
+                  url: comm.actor_id || `${baseUrl}/c/${comm.name}`,
                   snippet: comm.description ? comm.description.substring(0, 250) + "..." : "",
                   source: this.name,
                   thumbnail: comm.icon || "",
@@ -100,7 +112,7 @@ export default class LemmyEngine {
               if (!post) continue;
               results.push({
                   title: post.name || post.title || "",
-                  url: post.ap_id || `${POST_URL}${post.id}`,
+                  url: post.ap_id || `${baseUrl}/post/${post.id}`,
                   snippet: post.body ? post.body.substring(0, 250) + "..." : "",
                   source: this.name,
                   thumbnail: post.thumbnail_url || "",
@@ -116,7 +128,7 @@ export default class LemmyEngine {
               if (!comment) continue;
               results.push({
                   title: `Comment on ${post.name || post.title || "a post"} by ${creator.name || "someone"}`,
-                  url: comment.ap_id || `${COMMENT_URL}${comment.id}`,
+                  url: comment.ap_id || `${baseUrl}/comment/${comment.id}`,
                   snippet: comment.content ? comment.content.substring(0, 250) + "..." : "",
                   source: this.name,
                   thumbnail: creator.avatar || "",
