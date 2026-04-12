@@ -139,8 +139,8 @@
       {
         "path": "engines/lemmy",
         "name": "Lemmy World",
-        "description": "Adds the Lemmy engine to degoog. Searches Lemmy.world for posts, comments, and communities.",
-        "version": "1.0.0"
+        "description": "Adds the Lemmy engine to degoog. Searches Lemmy for posts, comments, and communities.",
+        "version": "1.0.1"
       },
       {
         "path": "engines/brave-api-search",
