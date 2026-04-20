@@ -146,6 +146,19 @@ When search results include GitHub repos or users, shows styled info above resul
 
 </details>
 
+### Apps pocket
+
+Adds a Google-style apps grid next to the settings icon. Apps are customised via the Configure button as a JSON list.
+
+<details>
+<summary>Screenshot</summary>
+
+![GitHub](plugins/apps-pocket/screenshots/1.png)
+
+</details>
+
+</details>
+
 ---
 
 <details>

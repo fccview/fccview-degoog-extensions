@@ -1,0 +1,217 @@
+.header-link {
+  line-height: 0;
+}
+
+.apps-pocket-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+.apps-pocket-launcher {
+  background: transparent;
+  border: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  color: var(--text-secondary)
+}
+
+.apps-pocket-launcher:hover {
+  color: var(--text-primary);
+}
+
+#results-header .apps-pocket-launcher {
+  margin-left: auto;
+}
+
+@media (max-width: 767.98px) {
+  #results-header .apps-pocket-launcher {
+    position: absolute;
+    top: 1rem;
+    right: 3.25rem;
+    margin-left: 0;
+  }
+}
+
+.apps-pocket-panel {
+  position: fixed;
+  z-index: 9999;
+  width: min(320px, calc(100vw - 16px));
+  max-height: min(70vh, 480px);
+  overflow: auto;
+  background: var(--bg-light);
+  color: var(--text-primary);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.apps-pocket-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.apps-pocket-title {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.apps-pocket-info-btn {
+  all: unset;
+  background: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-radius: 999px;
+  font-size: 12px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+}
+
+.apps-pocket-info-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.apps-pocket-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  max-height: 360px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.apps-pocket-grid::-webkit-scrollbar {
+  display: none;
+}
+
+.apps-pocket-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 6px;
+  border-radius: 10px;
+  color: var(--text-primary);
+  text-decoration: none;
+  text-align: center;
+  transition: background 0.15s;
+}
+
+.apps-pocket-tile:hover {
+  background: var(--bg-hover);
+}
+
+.apps-pocket-tile-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.apps-pocket-tile-img {
+  width: 100%;
+  object-fit: contain;
+}
+
+.apps-pocket-tile-fallback {
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--text-primary);
+  background: var(--bg);
+}
+
+.apps-pocket-tile-label {
+  font-size: 12px;
+  color: var(--text-primary);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.apps-pocket-empty {
+  grid-column: 1 / -1;
+  padding: 16px 8px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  text-align: center;
+}
+
+.apps-pocket-bang {
+  padding: 16px;
+  background: var(--bg);
+  border-radius: 8px;
+  color: var(--text-primary);
+}
+
+.apps-pocket-modal {
+  width: 640px;
+}
+
+.apps-pocket-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 320px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-right: 2px;
+}
+
+.apps-pocket-rows::-webkit-scrollbar {
+  display: none;
+}
+
+.apps-pocket-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto;
+  gap: 8px;
+  align-items: center;
+}
+
+.apps-pocket-row-add {
+  align-self: flex-start;
+}
+
+.apps-pocket-output-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.apps-pocket-output {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  resize: vertical;
+  min-height: 160px;
+}

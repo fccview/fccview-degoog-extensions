@@ -1,0 +1,13 @@
+{
+  "plugin-apps-pocket": {
+    "name": "Apps pocket",
+    "description": "Adds a Google-style apps grid next to the settings icon. Each app has a label, icon URL and link.",
+    "settings": {
+      "appsJson": {
+        "label": "Apps (JSON)",
+        "placeholder": "[{\"label\":\"Gmail\",\"icon\":\"https://.../icon.png\",\"url\":\"https://mail.google.com\"}]",
+        "description": "JSON array of {label, icon, url}. Labels and URLs are required; icon is an image URL and falls back to the first letter of the label."
+      }
+    }
+  }
+}
