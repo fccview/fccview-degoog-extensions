@@ -85,7 +85,7 @@
         "path": "plugins/github-slot",
         "name": "GitHub",
         "description": "When search results include GitHub repos or users, shows styled info above results.",
-        "version": "1.0.2",
+        "version": "1.1.0",
         "type": "slot"
       },
       {

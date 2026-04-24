@@ -138,6 +138,7 @@ export const slot = {
   id: "github-slot",
   name: "GitHub",
   position: "above-results",
+  waitForResults: true,
   description: "When search results include GitHub repos or users, shows styled info above results.",
 
   settingsSchema: [
