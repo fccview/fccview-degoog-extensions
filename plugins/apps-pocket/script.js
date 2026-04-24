@@ -1,4 +1,5 @@
 const APPS_API = "/api/plugin/apps-pocket/apps";
+const SETTINGS_API = "/api/plugin/apps-pocket/settings";
 const LAUNCHER_ID = "apps-pocket-launcher";
 const PANEL_ID = "apps-pocket-panel";
 const MODAL_ID = "apps-pocket-modal";
@@ -15,6 +16,25 @@ const _escapeHtml = (str) => {
 
 let cachedApps = null;
 let inflight = null;
+let hideJsonBuilder = false;
+
+const _fetchSettings = async () => {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 3000);
+  try {
+    const res = await fetch(SETTINGS_API, {
+      signal: controller.signal,
+      cache: "no-store",
+    });
+    if (!res.ok) return { hideJsonBuilder: false };
+    const data = await res.json();
+    return { hideJsonBuilder: data?.hideJsonBuilder === true };
+  } catch {
+    return { hideJsonBuilder: false };
+  } finally {
+    clearTimeout(timer);
+  }
+};
 
 const _fetchApps = async () => {
   const controller = new AbortController();
@@ -78,10 +98,13 @@ const _viewHtml = (apps) => {
   } else {
     body = apps.map(_tileHtml).join("");
   }
+  const infoBtn = hideJsonBuilder
+    ? ""
+    : `<button type="button" class="apps-pocket-info-btn" aria-label="Apps builder" title="Apps builder">${INFO_ICON}</button>`;
   return `
     <div class="apps-pocket-header">
       <span class="apps-pocket-title">Apps</span>
-      <button type="button" class="apps-pocket-info-btn" aria-label="Apps builder" title="Apps builder">${INFO_ICON}</button>
+      ${infoBtn}
     </div>
     <div class="apps-pocket-grid">${body}</div>
   `;
@@ -144,7 +167,7 @@ const _copyText = async (text) => {
     try {
       await navigator.clipboard.writeText(text);
       return true;
-    } catch { }
+    } catch {}
   }
   const ta = document.createElement("textarea");
   ta.value = text;
@@ -158,7 +181,7 @@ const _copyText = async (text) => {
   let ok = false;
   try {
     ok = document.execCommand("copy");
-  } catch { }
+  } catch {}
   ta.remove();
   return ok;
 };
@@ -224,9 +247,9 @@ function _bindModal(modal) {
       }, 1200);
     });
   }
-  modal.querySelectorAll(".apps-pocket-row").forEach((row) =>
-    _bindRow(modal, row),
-  );
+  modal
+    .querySelectorAll(".apps-pocket-row")
+    .forEach((row) => _bindRow(modal, row));
   document.addEventListener("keydown", _modalEsc);
 }
 
@@ -362,6 +385,9 @@ const _findTarget = () => {
 
 function _init() {
   _refreshApps();
+  _fetchSettings().then((s) => {
+    hideJsonBuilder = s.hideJsonBuilder;
+  });
   const tryMount = () => {
     if (document.getElementById(LAUNCHER_ID)) return;
     const el = _findTarget();
@@ -369,7 +395,10 @@ function _init() {
   };
   tryMount();
   const observer = new MutationObserver(tryMount);
-  observer.observe(document.documentElement, { childList: true, subtree: true });
+  observer.observe(document.documentElement, {
+    childList: true,
+    subtree: true,
+  });
 }
 
 if (document.readyState === "loading") {
