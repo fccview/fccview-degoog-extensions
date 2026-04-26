@@ -121,7 +121,7 @@
         "path": "themes/pokemon",
         "name": "Pokemon",
         "description": "Starter-inspired: Pikachu (yellow), Bulbasaur (green), Charmander (orange), Squirtle (blue).",
-        "version": "1.1.0"
+        "version": "1.2.0"
       }
     ],
     "transports": [

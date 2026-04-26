@@ -1,8 +1,19 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+@font-face {
+  font-family: "Unknown";
+  font-style: normal;
+  font-display: swap;
+  src: url("/themes/pokemon/fonts/Unown-OVEwA.ttf") format("truetype");
+}
 
-html,
-body {
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif ;
+@font-face {
+  font-family: "Flexo Regular";
+  font-style: normal;
+  font-display: swap;
+  src: url("/themes/pokemon/fonts/flexo-regular.ttf") format("truetype");
+}
+
+* {
+  font-family: "Flexo Regular", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif ;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -336,38 +347,6 @@ body::after {
   50% { transform: translateY(-8px); }
 }
 
-[data-pokemon-flavor] .results-logo {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-}
-
-[data-pokemon-flavor] .results-logo::before {
-  content: "";
-  width: 40px;
-  height: 40px;
-  flex-shrink: 0;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-}
-
-[data-pokemon-flavor="pikachu"] .results-logo::before {
-  background-image: url("https://play.pokemonshowdown.com/sprites/ani/pikachu.gif");
-}
-
-[data-pokemon-flavor="bulbasaur"] .results-logo::before {
-  background-image: url("https://play.pokemonshowdown.com/sprites/ani/bulbasaur.gif");
-}
-
-[data-pokemon-flavor="charmander"] .results-logo::before {
-  background-image: url("https://play.pokemonshowdown.com/sprites/ani/charmander.gif");
-}
-
-[data-pokemon-flavor="squirtle"] .results-logo::before {
-  background-image: url("https://play.pokemonshowdown.com/sprites/ani/squirtle.gif");
-}
-
 #header,
 #results-header {
   background: transparent ;
@@ -376,7 +355,6 @@ body::after {
 
 #home-logo .logo,
 .results-logo {
-  font-weight: 700 ;
   letter-spacing: -0.02em ;
   color: var(--text-primary) ;
   text-shadow: none ;
@@ -386,6 +364,11 @@ body::after {
 #home-logo .logo span,
 .results-logo span {
   color: inherit ;
+  font-family: "Unknown", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+#home-logo .logo span {
+  font-size: 8rem;
 }
 
 .search-bar,
