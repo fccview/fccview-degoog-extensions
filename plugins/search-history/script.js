@@ -75,7 +75,7 @@ function fetchAndShowHistory(input, dropdown, performSearch) {
     .catch(() => {});
 }
 
-function appendHistory(entry, onNavigate = true) {
+function appendHistory(entry, onNavigate = false) {
   const q = (entry || "").trim();
   if (!q || q === "!history" || q.startsWith("!history ")) return;
   const payload = JSON.stringify({ entry: q });
