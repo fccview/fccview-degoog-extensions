@@ -75,7 +75,7 @@ function fetchAndShowHistory(input, dropdown, performSearch) {
     .catch(() => {});
 }
 
-function appendHistory(entry, onNavigate = false) {
+function appendHistory(entry, onNavigate = true) {
   const q = (entry || "").trim();
   if (!q || q === "!history" || q.startsWith("!history ")) return;
   const payload = JSON.stringify({ entry: q });
@@ -126,8 +126,8 @@ function initSearchHistory() {
   }
 }
 
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initSearchHistory);
-} else {
-  initSearchHistory();
+document.onreadystatechange = () => {
+  if (document.readyState === "complete"){
+    initSearchHistory()
+  }
 }
