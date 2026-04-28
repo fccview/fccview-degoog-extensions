@@ -168,6 +168,42 @@
         "name": "DuckDuckGo Images",
         "description": "Adds the DuckDuckGo images search engine to degoog, adding an extra ~70 images per page to the image results.",
         "version": "1.0.0"
+      },
+      {
+        "path": "engines/openverse",
+        "name": "Openverse",
+        "description": "Adds the Openverse image engine to degoog. Searches CC-licensed images aggregated from Flickr, Wikimedia and museum collections via the public Openverse API. No API key required.",
+        "version": "1.0.0"
+      },
+      {
+        "path": "engines/wikimedia-commons",
+        "name": "Wikimedia Commons",
+        "description": "Adds the Wikimedia Commons image engine to degoog. Searches the Wikimedia Commons media archive via the MediaWiki API. No API key required.",
+        "version": "1.0.0"
+      },
+      {
+        "path": "engines/nasa-images",
+        "name": "NASA Images",
+        "description": "Adds the NASA image engine to degoog. Searches the NASA Image and Video Library. No API key required.",
+        "version": "1.0.0"
+      },
+      {
+        "path": "engines/hacker-news",
+        "name": "Hacker News",
+        "description": "Adds the Hacker News engine to degoog. Searches Hacker News stories via the Algolia API. No API key required.",
+        "version": "1.0.0"
+      },
+      {
+        "path": "engines/duckduckgo-news",
+        "name": "DuckDuckGo News",
+        "description": "Adds the DuckDuckGo News engine to degoog. No API key required.",
+        "version": "1.0.0"
+      },
+      {
+        "path": "engines/the-guardian",
+        "name": "The Guardian",
+        "description": "Adds The Guardian as a news engine to degoog via the Guardian Open Platform API. Requires a free API key from open-platform.theguardian.com.",
+        "version": "1.0.0"
       }
     ]
   }

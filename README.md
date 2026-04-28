@@ -282,4 +282,70 @@ Adds the Brave Search API as a web engine. Requires a free API key from brave.co
 
 </details>
 
+### Openverse
+
+Adds the Openverse image engine to degoog. Searches CC-licensed images aggregated from Flickr, Wikimedia and museum collections via the public Openverse API. No API key required.
+
+<details>
+<summary>Screenshot</summary>
+
+![Openverse](engines/openverse/screenshots/1.png)
+
+</details>
+
+### Wikimedia Commons
+
+Adds the Wikimedia Commons image engine to degoog. Searches the Wikimedia Commons media archive via the MediaWiki API. No API key required.
+
+<details>
+<summary>Screenshot</summary>
+
+![Wikimedia Commons](engines/wikimedia-commons/screenshots/1.png)
+
+</details>
+
+### NASA Images
+
+Adds the NASA image engine to degoog. Searches the NASA Image and Video Library. No API key required.
+
+<details>
+<summary>Screenshot</summary>
+
+![NASA Images](engines/nasa-images/screenshots/1.png)
+
+</details>
+
+### Hacker News
+
+Adds the Hacker News engine to degoog. Searches Hacker News stories via the Algolia API. No API key required.
+
+<details>
+<summary>Screenshot</summary>
+
+![Hacker News](engines/hacker-news/screenshots/1.png)
+
+</details>
+
+### DuckDuckGo News
+
+Adds the DuckDuckGo News engine to degoog. No API key required.
+
+<details>
+<summary>Screenshot</summary>
+
+![DuckDuckGo News](engines/duckduckgo-news/screenshots/1.png)
+
+</details>
+
+### The Guardian
+
+Adds The Guardian as a news engine via the Guardian Open Platform API. Requires a free API key from open-platform.theguardian.com.
+
+<details>
+<summary>Screenshot</summary>
+
+![The Guardian](engines/the-guardian/screenshots/1.png)
+
+</details>
+
 </details>
