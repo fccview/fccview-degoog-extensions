@@ -222,12 +222,6 @@
         "name": "The Guardian",
         "description": "Adds The Guardian as a news engine to degoog via the Guardian Open Platform API. Requires a free API key from open-platform.theguardian.com.",
         "version": "1.0.0"
-      },
-      {
-        "path": "engines/headless-google-images",
-        "name": "Google Images (Headless)",
-        "description": "Scrapes Google Images using a fully rendered page instead of the broken JSON endpoint. Requires a headless browser transport (CloakBrowser recommended, Browserless also works) to be installed, configured, and selected as the transport for this engine in Settings → Engines → Configure → Advanced.",
-        "version": "1.0.0"
       }
     ]
   }
