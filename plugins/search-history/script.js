@@ -126,8 +126,8 @@ function initSearchHistory() {
   }
 }
 
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initSearchHistory);
-} else {
-  initSearchHistory();
+document.onreadystatechange = () => {
+  if (document.readyState === "complete"){
+    initSearchHistory()
+  }
 }
