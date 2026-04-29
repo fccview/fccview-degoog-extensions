@@ -43,14 +43,14 @@
         "path": "plugins/search-history",
         "name": "Search history",
         "description": "Stores search history in data/history.json with timestamps; !history shows a paginated, deletable list.",
-        "version": "1.1.1",
+        "version": "1.2.0",
         "type": "command"
       },
       {
         "path": "plugins/tmdb-slot",
         "name": "TMDb",
         "description": "Shows movie/TV show details above search results.",
-        "version": "1.3.1",
+        "version": "1.4.0",
         "type": "slot"
       },
       {
@@ -130,6 +130,24 @@
         "name": "FlareSolverr",
         "description": "Bypass Cloudflare challenges via a FlareSolverr instance. Once configured, engines can select flaresolverr as their outgoing transport.",
         "version": "1.1.0"
+      },
+      {
+        "path": "transports/browserless",
+        "name": "Browserless",
+        "description": "Fetches pages through a self-hosted Browserless instance (or any compatible headless browser service). Renders JavaScript before returning HTML — useful for engines like Google Images that block standard HTTP requests. Compatible with browserless/chromium, CloakBrowser wrappers, and any service exposing POST /content.",
+        "version": "1.0.0"
+      },
+      {
+        "path": "transports/cloakbrowser",
+        "name": "CloakBrowser",
+        "description": "Fetches pages through a self-hosted CloakBrowser service (stealth Chromium). Patches bot-detection signals at the C++ level — navigator.webdriver, canvas, CDP leaks — bypassing Google and Cloudflare. See homelab/cloakbrowser for the Docker service.",
+        "version": "1.0.0"
+      },
+      {
+        "path": "transports/camoufox",
+        "name": "Camoufox",
+        "description": "Fetches pages through a self-hosted Camoufox service (stealth Firefox). Patches bot-detection signals at the C++ level, bypassing Google and Cloudflare. See homelab/camoufox for the Docker service.",
+        "version": "1.0.0"
       }
     ],
     "engines": [
@@ -203,6 +221,12 @@
         "path": "engines/the-guardian",
         "name": "The Guardian",
         "description": "Adds The Guardian as a news engine to degoog via the Guardian Open Platform API. Requires a free API key from open-platform.theguardian.com.",
+        "version": "1.0.0"
+      },
+      {
+        "path": "engines/headless-google-images",
+        "name": "Google Images (Headless)",
+        "description": "Scrapes Google Images using a fully rendered page instead of the broken JSON endpoint. Requires a headless browser transport (CloakBrowser recommended, Browserless also works) to be installed, configured, and selected as the transport for this engine in Settings → Engines → Configure → Advanced.",
         "version": "1.0.0"
       }
     ]

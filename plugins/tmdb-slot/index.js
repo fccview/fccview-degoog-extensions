@@ -115,7 +115,11 @@ const _buildCastStrip = (cast) => {
         : "";
       const initial = (c.name || "").trim().charAt(0).toUpperCase();
       const fallback = `<span class="imdb-cast-initial" style="${img ? "display:none" : ""}">${_esc(initial)}</span>`;
-      return `<div class="imdb-cast-card"><div class="imdb-cast-photo-wrap">${img}${fallback}</div><span class="imdb-cast-name">${name}</span>${character ? `<span class="imdb-cast-character">${character}</span>` : ""}</div>`;
+      const href = c.id ? `https://www.themoviedb.org/person/${c.id}` : "";
+      const inner = `<div class="imdb-cast-photo-wrap">${img}${fallback}</div><span class="imdb-cast-name">${name}</span>${character ? `<span class="imdb-cast-character">${character}</span>` : ""}`;
+      return href
+        ? `<a href="${_esc(href)}" target="_blank" rel="noopener" class="imdb-cast-card">${inner}</a>`
+        : `<div class="imdb-cast-card">${inner}</div>`;
     })
     .join("");
 };
@@ -196,8 +200,12 @@ const _buildItemPanel = (item, details, cast, mediaType) => {
     : "";
   const seasonsSection = mediaType === "tv" ? _buildSeasonsSection(details, item.id) : "";
   const plotBlock = plot ? `<p class="imdb-plot">${_esc(plot)}</p>` : "";
+  const tmdbHref = item.id ? `https://www.themoviedb.org/${mediaType}/${item.id}` : "";
+  const titleHtml = tmdbHref
+    ? `<a href="${_esc(tmdbHref)}" target="_blank" rel="noopener" class="imdb-title-link"><h3 class="imdb-title">${_esc(title)}</h3></a>`
+    : `<h3 class="imdb-title">${_esc(title)}</h3>`;
 
-  return `<div class="imdb-hero">${posterHtml}<div class="imdb-hero-text"><div class="imdb-meta">${_esc(metaLine)}</div><h3 class="imdb-title">${_esc(title)}</h3></div></div>${plotBlock}${castSection}${seasonsSection}`;
+  return `<div class="imdb-hero">${posterHtml}<div class="imdb-hero-text"><div class="imdb-meta">${_esc(metaLine)}</div>${titleHtml}</div></div>${plotBlock}${castSection}${seasonsSection}`;
 };
 
 const _wrapTabs = (tabs) => {
@@ -289,7 +297,11 @@ export const slot = {
         const castSection = castStrip
           ? `<h4 class="imdb-cast-heading">Cast</h4><div class="imdb-cast-scroll"><div class="imdb-cast-strip">${castStrip}</div></div>`
           : "";
-        const content = `<div class="imdb-hero imdb-hero--compact">${posterHtml}<div class="imdb-hero-text"><div class="imdb-meta">${_esc(metaLine)}</div><h3 class="imdb-title">${_esc(title)}</h3></div></div>${castSection}`;
+        const tmdbHref = item.id ? `https://www.themoviedb.org/${mediaType}/${item.id}` : "";
+        const titleHtml = tmdbHref
+          ? `<a href="${_esc(tmdbHref)}" target="_blank" rel="noopener" class="imdb-title-link"><h3 class="imdb-title">${_esc(title)}</h3></a>`
+          : `<h3 class="imdb-title">${_esc(title)}</h3>`;
+        const content = `<div class="imdb-hero imdb-hero--compact">${posterHtml}<div class="imdb-hero-text"><div class="imdb-meta">${_esc(metaLine)}</div>${titleHtml}</div></div>${castSection}`;
         return { title: "Cast", html: _render({ content }) };
       }
 
@@ -316,7 +328,9 @@ export const slot = {
         const filmography = [...movies, ...tvShows].slice(0, 30);
         if (filmography.length > 0) {
           const movieCards = _buildMovieCards(filmography);
-          const content = `<h3 class="imdb-filmography-title">${_esc(person.name || searchTerm)}</h3><h4 class="imdb-section-heading">Filmography</h4><div class="imdb-filmography-scroll"><div class="imdb-filmography-strip">${movieCards}</div></div>`;
+          const personHref = `https://www.themoviedb.org/person/${person.id}`;
+          const personTitleHtml = `<a href="${_esc(personHref)}" target="_blank" rel="noopener" class="imdb-title-link"><h3 class="imdb-filmography-title">${_esc(person.name || searchTerm)}</h3></a>`;
+          const content = `${personTitleHtml}<h4 class="imdb-section-heading">Filmography</h4><div class="imdb-filmography-scroll"><div class="imdb-filmography-strip">${movieCards}</div></div>`;
           return { title: person.name || "Filmography", html: _render({ content }) };
         }
       }

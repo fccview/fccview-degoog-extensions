@@ -216,7 +216,40 @@ Bypass Cloudflare challenges via a [FlareSolverr](https://github.com/FlareSolver
 <details>
 <summary>Screenshot</summary>
 
-![Ecosia](transports/flaresolverr/screenshots/1.png)
+![FlareSolverr](transports/flaresolverr/screenshots/1.png)
+
+</details>
+
+### Browserless
+
+Fetches pages through a self-hosted Browserless instance (or any compatible headless browser service). Renders JavaScript before returning HTML — useful for engines like Google Images that block standard HTTP requests. Compatible with browserless/chromium, CloakBrowser wrappers, and any service exposing `POST /content`.
+
+<details>
+<summary>Screenshot</summary>
+
+![Browserless](transports/browserless/screenshots/1.png)
+
+</details>
+
+### CloakBrowser
+
+Fetches pages through a self-hosted CloakBrowser service (stealth Chromium). Patches bot-detection signals at the C++ level — `navigator.webdriver`, canvas, CDP leaks — bypassing Google and Cloudflare. See homelab/cloakbrowser for the Docker service.
+
+<details>
+<summary>Screenshot</summary>
+
+![CloakBrowser](transports/cloakbrowser/screenshots/1.png)
+
+</details>
+
+### Camoufox
+
+Fetches pages through a self-hosted Camoufox service (stealth Firefox). Patches bot-detection signals at the C++ level, bypassing Google and Cloudflare. See homelab/camoufox for the Docker service.
+
+<details>
+<summary>Screenshot</summary>
+
+![Camoufox](transports/camoufox/screenshots/1.png)
 
 </details>
 

@@ -75,59 +75,58 @@ function fetchAndShowHistory(input, dropdown, performSearch) {
     .catch(() => {});
 }
 
-function appendHistory(entry, onNavigate = false) {
+const appendHistory = (entry) => {
   const q = (entry || "").trim();
   if (!q || q === "!history" || q.startsWith("!history ")) return;
-  const payload = JSON.stringify({ entry: q });
-  if (onNavigate && navigator.sendBeacon) {
-    const blob = new Blob([payload], { type: "text/plain;charset=UTF-8" });
-    navigator.sendBeacon(`${HISTORY_API}/append`, blob);
-    return;
-  }
   fetch(`${HISTORY_API}/append`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: payload,
+    body: JSON.stringify({ entry: q }),
+    keepalive: true,
   }).catch(() => {});
 }
 
 function initSearchHistory() {
-  const searchInput = document.getElementById("search-input");
-  const resultsInput = document.getElementById("results-search-input");
-  const dropdownHome = document.getElementById("ac-dropdown-home");
-  const dropdownResults = document.getElementById("ac-dropdown-results");
-  const formHome = document.getElementById("search-form-home");
-  const resultsBtn = document.getElementById("results-search-btn");
+  document.addEventListener("focusin", (e) => {
+    const target = e.target;
+    if (!(target instanceof HTMLElement)) return;
+    const performSearch = window.performSearch;
+    if (target.id === "search-input") {
+      const dropdown = document.getElementById("ac-dropdown-home");
+      if (dropdown) fetchAndShowHistory(target, dropdown, performSearch);
+    } else if (target.id === "results-search-input") {
+      const dropdown = document.getElementById("ac-dropdown-results");
+      if (dropdown) fetchAndShowHistory(target, dropdown, performSearch);
+    }
+  });
 
-  if (!searchInput || !resultsInput) return;
+  document.addEventListener("submit", (e) => {
+    const target = e.target;
+    if (target instanceof HTMLElement && target.id === "search-form-home") {
+      const input = document.getElementById("search-input");
+      if (input) appendHistory(input.value);
+    }
+  }, true);
 
-  const performSearch = window.performSearch;
-  if (searchInput && dropdownHome) {
-    searchInput.addEventListener("focus", () => fetchAndShowHistory(searchInput, dropdownHome, performSearch));
-  }
-  if (resultsInput && dropdownResults) {
-    resultsInput.addEventListener("focus", () => fetchAndShowHistory(resultsInput, dropdownResults, performSearch));
-  }
+  document.addEventListener("click", (e) => {
+    const target = e.target;
+    if (target instanceof HTMLElement && target.closest("#results-search-btn")) {
+      const input = document.getElementById("results-search-input");
+      if (input) appendHistory(input.value);
+    }
+  });
 
-  if (formHome && searchInput) {
-    formHome.addEventListener("submit", () => {
-      appendHistory(searchInput.value, true);
-    });
-  }
-  if (resultsBtn && resultsInput) {
-    resultsBtn.addEventListener("click", () => {
-      appendHistory(resultsInput.value);
-    });
-  }
-  if (resultsInput) {
-    resultsInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") appendHistory(resultsInput.value);
-    });
-  }
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Enter") return;
+    const target = e.target;
+    if (target instanceof HTMLElement && target.id === "results-search-input") {
+      appendHistory(target.value);
+    }
+  });
 }
 
-document.onreadystatechange = () => {
-  if (document.readyState === "complete"){
-    initSearchHistory()
-  }
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initSearchHistory);
+} else {
+  initSearchHistory();
 }

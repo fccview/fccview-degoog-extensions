@@ -48,6 +48,25 @@
   color: var(--text-primary);
 }
 
+.imdb-title-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.imdb-title-link:hover .imdb-title,
+.imdb-title-link:hover .imdb-filmography-title {
+  text-decoration: underline;
+}
+
+a.imdb-cast-card {
+  color: inherit;
+  text-decoration: none;
+}
+
+a.imdb-cast-card:hover .imdb-cast-name {
+  text-decoration: underline;
+}
+
 .imdb-hero-meta {
   font-size: 0.8125rem;
   color: var(--text-secondary);
