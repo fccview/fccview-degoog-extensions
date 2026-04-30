@@ -13,7 +13,12 @@ html[dir="rtl"] .apps-pocket-panel {
   justify-content: center;
   gap: 0.5rem;
   margin-left: auto;
-  position: relative;
+}
+
+@media (min-width: 767.98px) {
+  .apps-pocket-wrapper {
+    position: relative;
+  }
 }
 
 .apps-pocket-launcher {
