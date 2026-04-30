@@ -288,15 +288,8 @@ function _renderView(panel, apps) {
   }
 }
 
-function _positionPanel(btn, panel) {
-  const rect = btn.getBoundingClientRect();
-  panel.style.top = `${rect.bottom + 8}px`;
-  panel.style.right = `${Math.max(8, window.innerWidth - rect.right)}px`;
-}
-
 async function _openPanel(btn, panel) {
   panel.style.display = "block";
-  _positionPanel(btn, panel);
   _renderView(panel, cachedApps);
   const apps = await _refreshApps();
   if (panel.style.display === "none") return;
@@ -321,7 +314,6 @@ function _ensurePanel() {
   panel.id = PANEL_ID;
   panel.className = "apps-pocket-panel";
   panel.style.display = "none";
-  document.body.appendChild(panel);
   panelEl = panel;
 
   document.addEventListener("click", (e) => {
@@ -336,11 +328,6 @@ function _ensurePanel() {
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && panelEl && panelEl.style.display !== "none")
       _closePanel(panelEl);
-  });
-
-  window.addEventListener("resize", () => {
-    if (panelEl && panelEl.style.display !== "none" && launcherBtn)
-      _positionPanel(launcherBtn, panelEl);
   });
 
   return panel;
@@ -365,6 +352,7 @@ function _mountButton(settingsEl) {
   launcherBtn = btn;
 
   const panel = _ensurePanel();
+  wrapper.appendChild(panel);
 
   btn.addEventListener("click", (e) => {
     e.stopPropagation();

@@ -1,3 +1,8 @@
+html[dir="rtl"] .apps-pocket-panel {
+  right: auto;
+  left: 0;
+}
+
 .header-link {
   line-height: 0;
 }
@@ -8,6 +13,7 @@
   justify-content: center;
   gap: 0.5rem;
   margin-left: auto;
+  position: relative;
 }
 
 .apps-pocket-launcher {
@@ -21,7 +27,7 @@
   align-items: center;
   justify-content: center;
   padding: 0.5rem;
-  color: var(--text-secondary)
+  color: var(--text-secondary);
 }
 
 .apps-pocket-launcher:hover {
@@ -42,8 +48,10 @@
 }
 
 .apps-pocket-panel {
-  position: fixed;
+  position: absolute;
   z-index: 9999;
+  top: calc(100% + 8px);
+  right: 0;
   width: min(320px, calc(100vw - 16px));
   max-height: min(70vh, 480px);
   overflow: auto;
@@ -51,6 +59,16 @@
   color: var(--text-primary);
   border-radius: 12px;
   padding: 12px;
+}
+
+@media (max-width: 767.98px) {
+  .apps-pocket-panel {
+    position: fixed;
+    top: 56px;
+    right: 8px;
+    left: 8px;
+    width: auto;
+  }
 }
 
 .apps-pocket-header {
